@@ -9,10 +9,19 @@ export default defineConfig({
       input: {
         main: './index.html',
         background: './src/background.ts',
+        content: './src/content.ts',
       },
       output: {
         entryFileNames: (chunk) => {
-          return chunk.name === 'background' ? '[name].js' : 'assets/[name]-[hash].js';
+          switch (chunk.name) {
+            case 'background':
+              return '[name].js';
+            case 'content':
+              return '[name].js';
+            default:
+              return 'assets/[name]-[hash].js';
+            
+          };
         },
       },
     },

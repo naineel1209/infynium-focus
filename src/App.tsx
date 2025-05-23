@@ -1,10 +1,31 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
+import reactLogo from './assets/react.svg';
+import viteLogo from '/vite.svg';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
+
+  /**
+   * Handle button click event - This button will hard reload the current tab
+   * @returns {void}
+   */
+  const handleButtonClick = async (): Promise<void> => {
+    const currentTab = await chrome.tabs.query({ active: true, currentWindow: true });
+
+    // Empty Cache and Hard Reload
+    await chrome.browsingData.removeCache({
+      origins: [currentTab[0].url!],
+    });
+
+    // Hard Reload
+    await chrome.tabs.reload(currentTab[0].id!, {
+      bypassCache: true,
+    });
+
+    // Increment the count
+    setCount((prevCount) => prevCount + 1);
+  }
 
   return (
     <>
@@ -18,8 +39,10 @@ function App() {
       </div>
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+        <button onClick={handleButtonClick}>
+          <span>Hard Reload</span>
+          <span className="counter">{count}</span>
+          <span className="counter"> times</span>
         </button>
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
