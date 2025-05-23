@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🏆 Persistence Champion Award Ceremony</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #96ceb4);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #333;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .ceremony-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ff6b6b;
+            animation: confetti-fall 3s linear infinite;
+            opacity: 0;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-100vh) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        .title {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            color: #ff6b6b;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            color: #666;
+            font-style: italic;
+        }
+
+        .trophy {
+            font-size: 5em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin: 20px 0;
+            filter: drop-shadow(0 10px 20px rgba(255, 215, 0, 0.3));
+        }
+
+        .trophy:hover {
+            transform: scale(1.1);
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+
+        .counter {
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin: 20px 0;
+            display: inline-block;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .achievements {
+            margin: 30px 0;
+        }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 8px 15px;
+            margin: 5px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            transform: scale(0);
+            transition: all 0.5s ease;
+        }
+
+        .badge.unlocked {
+            transform: scale(1);
+            animation: bounce 0.6s ease;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) scale(1); }
+            40% { transform: translateY(-20px) scale(1.1); }
+            60% { transform: translateY(-10px) scale(1.05); }
+        }
+
+        .message {
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin: 20px 0;
+            color: #555;
+        }
+
+        .try-again-btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a6f);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(238, 90, 111, 0.3);
+            margin: 10px;
+        }
+
+        .try-again-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(238, 90, 111, 0.4);
+        }
+
+        .fake-stats {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .stat-line {
+            margin: 8px 0;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="ceremony-container">
+        <h1 class="title">🏆 PERSISTENCE CHAMPION 🏆</h1>
+        <p class="subtitle">"Most Dedicated Site Visitor" Award Ceremony</p>
+        
+        <div class="trophy" onclick="celebrateTrophy()">🏆</div>
+        
+        <div class="counter" id="attemptCounter">
+            Today's Attempts: <span id="attempts">0</span>
+        </div>
+
+        <div class="achievements" id="achievementsBadges">
+            <!-- Badges will be added dynamically -->
+        </div>
+
+        <div class="message" id="message">
+            Congratulations! Your unwavering determination to access blocked content has earned you this prestigious award. Your persistence is truly... something.
+        </div>
+
+        <div class="fake-stats">
+            <div class="stat-line">📊 Productivity Lost: <span id="productivity">0</span> hours</div>
+            <div class="stat-line">🔄 Refresh Clicks: <span id="refreshes">0</span></div>
+            <div class="stat-line">😤 Frustration Level: <span id="frustration">MAXIMUM</span></div>
+            <div class="stat-line">💡 Alternative Activities Ignored: <span id="alternatives">∞</span></div>
+        </div>
+
+        <button class="try-again-btn" onclick="tryAgain()">🎯 Try Again (It'll Work This Time!)</button>
+        <button class="try-again-btn" onclick="newExcuse()">🎲 Generate New Excuse</button>
+    </div>
+
+    <script>
+        let attempts = localStorage.getItem('blockAttempts') || 0;
+        let totalRefreshes = localStorage.getItem('totalRefreshes') || 0;
+        
+        const badges = [
+            { name: "🔥 First Timer", threshold: 1, message: "Welcome to the club!" },
+            { name: "🎯 Persistent Pete", threshold: 5, message: "You're getting warmer..." },
+            { name: "🏃 Marathon Runner", threshold: 10, message: "Still going strong!" },
+            { name: "🤖 Automation Expert", threshold: 25, message: "Are you a bot?" },
+            { name: "🎪 Circus Performer", threshold: 50, message: "Ladies and gentlemen..." },
+            { name: "🦾 Unstoppable Force", threshold: 100, message: "Physics laws don't apply" },
+            { name: "🌟 Legend Status", threshold: 200, message: "You've transcended reality" }
+        ];
+
+        const sarcasticMessages = [
+            "We admire your optimism. Really. It's... inspiring.",
+            "Have you considered taking up stamp collecting instead?",
+            "Your determination could power a small city.",
+            "Maybe the 47th time will be the charm?",
+            "We're starting a support group. You'll be our first member.",
+            "Your persistence has been noted by NASA.",
+            "Breaking news: Local person discovers definition of insanity.",
+            "Your browser history must be fascinating.",
+            "We should write a book about your journey.",
+            "Your dedication deserves its own documentary."
+        ];
+
+        const excuses = [
+            "The server is taking a coffee break ☕",
+            "Our hamsters are on strike 🐹",
+            "The internet ran out of pixels 🎨",
+            "We're updating our blocking algorithms 🤖",
+            "The website is social distancing 😷",
+            "Our servers are having an existential crisis 🤔",
+            "The content is stuck in traffic 🚗",
+            "We're teaching the site to play hide and seek 👻",
+            "The database is learning quantum physics 🔬",
+            "Our IT team is fighting dragons 🐉"
+        ];
+
+        function init() {
+            attempts++;
+            totalRefreshes++;
+            localStorage.setItem('blockAttempts', attempts);
+            localStorage.setItem('totalRefreshes', totalRefreshes);
+            
+            document.getElementById('attempts').textContent = attempts;
+            document.getElementById('productivity').textContent = Math.floor(attempts * 0.5);
+            document.getElementById('refreshes').textContent = totalRefreshes;
+            
+            updateAchievements();
+            updateMessage();
+        }
+
+        function updateAchievements() {
+            const badgesContainer = document.getElementById('achievementsBadges');
+            badgesContainer.innerHTML = '';
+            
+            badges.forEach(badge => {
+                if (attempts >= badge.threshold) {
+                    const badgeElement = document.createElement('span');
+                    badgeElement.className = 'badge';
+                    badgeElement.textContent = badge.name;
+                    badgeElement.title = badge.message;
+                    badgesContainer.appendChild(badgeElement);
+                    
+                    setTimeout(() => {
+                        badgeElement.classList.add('unlocked');
+                    }, 100);
+                }
+            });
+        }
+
+        function updateMessage() {
+            const messageElement = document.getElementById('message');
+            if (attempts > 10) {
+                const randomMessage = sarcasticMessages[Math.floor(Math.random() * sarcasticMessages.length)];
+                messageElement.textContent = randomMessage;
+            }
+        }
+
+        function celebrateTrophy() {
+            const trophy = document.querySelector('.trophy');
+            trophy.style.animation = 'shake 0.5s ease-in-out';
+            
+            // Create confetti
+            for (let i = 0; i < 20; i++) {
+                createConfetti();
+            }
+            
+            setTimeout(() => {
+                trophy.style.animation = '';
+            }, 500);
+        }
+
+        function createConfetti() {
+            const confetti = document.createElement('div');
+            confetti.className = 'confetti';
+            confetti.style.left = Math.random() * 100 + '%';
+            confetti.style.animationDelay = Math.random() * 3 + 's';
+            confetti.style.backgroundColor = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57'][Math.floor(Math.random() * 5)];
+            
+            document.querySelector('.ceremony-container').appendChild(confetti);
+            
+            setTimeout(() => {
+                confetti.remove();
+            }, 3000);
+        }
+
+        function tryAgain() {
+            location.reload();
+        }
+
+        function newExcuse() {
+            const randomExcuse = excuses[Math.floor(Math.random() * excuses.length)];
+            document.getElementById('message').textContent = randomExcuse;
+        }
+
+        // Initialize on page load
+        init();
+    </script>
+</body>
+</html>

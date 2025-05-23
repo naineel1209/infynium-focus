@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⏰ Temporal Access Solutions Inc.</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(45deg, #0f0f23, #1a1a2e, #16213e, #0f3460);
+            background-size: 400% 400%;
+            animation: temporalShift 15s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00ff00;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes temporalShift {
+            0%, 100% { 
+                background-position: 0% 50%;
+                filter: hue-rotate(0deg);
+            }
+            25% { 
+                background-position: 100% 0%;
+                filter: hue-rotate(90deg);
+            }
+            50% { 
+                background-position: 100% 100%;
+                filter: hue-rotate(180deg);
+            }
+            75% { 
+                background-position: 0% 100%;
+                filter: hue-rotate(270deg);
+            }
+        }
+
+        .time-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #00ff00;
+            border-radius: 50%;
+            animation: timeParticle 8s linear infinite;
+            box-shadow: 0 0 10px #00ff00;
+        }
+
+        @keyframes timeParticle {
+            0% {
+                transform: translateY(100vh) translateX(0) scale(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(200px) scale(1);
+                opacity: 0;
+            }
+        }
+
+        .time-machine-container {
+            background: rgba(0, 0, 0, 0.8);
+            border: 3px solid #00ff00;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 
+                inset 0 0 30px rgba(0, 255, 0, 0.1),
+                0 0 50px rgba(0, 255, 0, 0.3);
+            max-width: 800px;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(10px);
+            animation: machineHum 3s ease-in-out infinite;
+        }
+
+        @keyframes machineHum {
+            0%, 100% { 
+                box-shadow: 
+                    inset 0 0 30px rgba(0, 255, 0, 0.1),
+                    0 0 50px rgba(0, 255, 0, 0.3);
+            }
+            50% { 
+                box-shadow: 
+                    inset 0 0 30px rgba(0, 255, 0, 0.3),
+                    0 0 70px rgba(0, 255, 0, 0.5);
+            }
+        }
+
+        .title {
+            font-size: 2.8em;
+            margin-bottom: 15px;
+            color: #00ff00;
+            text-shadow: 
+                0 0 20px #00ff00,
+                0 0 40px #00ff00;
+            font-weight: bold;
+            animation: titleGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes titleGlow {
+            0%, 100% { 
+                text-shadow: 
+                    0 0 20px #00ff00,
+                    0 0 40px #00ff00;
+            }
+            50% { 
+                text-shadow: 
+                    0 0 30px #00ff00,
+                    0 0 60px #00ff00,
+                    0 0 80px #00ff00;
+            }
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            color: #00cccc;
+            font-style: italic;
+        }
+
+        .time-machine {
+            width: 200px;
+            height: 200px;
+            border: 5px solid #00ff00;
+            border-radius: 50%;
+            margin: 30px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            cursor: pointer;
+            position: relative;
+            background: radial-gradient(circle, rgba(0, 255, 0, 0.1) 0%, transparent 70%);
+            transition: all 0.3s ease;
+        }
+
+        .time-machine::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 2px solid #00ff00;
+            border-radius: 50%;
+            animation: outerRing 4s linear infinite;
+        }
+
+        .time-machine::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            bottom: 20px;
+            border: 1px solid #00cccc;
+            border-radius: 50%;
+            animation: innerRing 3s linear infinite reverse;
+        }
+
+        @keyframes outerRing {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes innerRing {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .time-machine:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 50px rgba(0, 255, 0, 0.5);
+        }
+
+        .time-machine.activated {
+            animation: timeMachineActivate 3s ease-in-out;
+        }
+
+        @keyframes timeMachineActivate {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.2) rotate(90deg); }
+            50% { transform: scale(0.8) rotate(180deg); }
+            75% { transform: scale(1.3) rotate(270deg); }
+        }
+
+        .time-display {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid #00cccc;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .current-time {
+            font-size: 1.5em;
+            color: #ff6600;
+            margin-bottom: 10px;
+        }
+
+        .target-time {
+            font-size: 1.3em;
+            color: #00ff00;
+            margin-bottom: 15px;
+        }
+
+        .time-controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+
+        .time-btn {
+            background: linear-gradient(45deg, #001a33, #003366);
+            color: #00cccc;
+            border: 2px solid #00cccc;
+            padding: 10px 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        .time-btn:hover {
+            background: linear-gradient(45deg, #003366, #0066cc);
+            color: #00ff00;
+            border-color: #00ff00;
+            transform: translateY(-2px);
+        }
+
+        .time-btn:active {
+            transform: translateY(0);
+        }
+
+        .quantum-status {
+            background: rgba(255, 0, 0, 0.1);
+            border: 2px solid #ff3333;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .status-title {
+            font-size: 1.2em;
+            color: #ff3333;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 5px 0;
+            padding: 2px 0;
+        }
+
+        .parallel-universe-detector {
+            background: rgba(0, 255, 255, 0.1);
+            border: 2px solid #00cccc;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .detector-title {
+            font-size: 1.3em;
+            color: #00cccc;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .universe-list {
+            max-height: 200px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .universe-item {
+            padding: 8px;
+            margin: 5px 0;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .universe-item:hover {
+            background: rgba(0, 255, 255, 0.2);
+            border-left-color: #00cccc;
+            transform: translateX(5px);
+        }
+
+        .universe-item.blocked {
+            color: #ff6666;
+            background: rgba(255, 0, 0, 0.1);
+        }
+
+        .universe-item.accessible {
+            color: #66ff66;
+            background: rgba(0, 255, 0, 0.1);
+        }
+
+        .temporal-log {
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid #333;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 20px 0;
+            height: 150px;
+            overflow-y: auto;
+            font-size: 0.9em;
+            text-align: left;
+        }
+
+        .log-entry {
+            margin: 3px 0;
+            opacity: 0;
+            animation: logFadeIn 0.5s ease forwards;
+        }
+
+        @keyframes logFadeIn {
+            to { opacity: 1; }
+        }
+
+        .log-entry.error {
+            color: #ff6666;
+        }
+
+        .log-entry.success {
+            color: #66ff66;
+        }
+
+        .log-entry.warning {
+            color: #ffff66;
+        }
+
+        .main-button {
+            background: linear-gradient(45deg, #003366, #0066cc);
+            color: #00ff00;
+            border: 2px solid #00ff00;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
+            margin: 10px;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+        }
+
+        .main-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 255, 0, 0.4);
+            background: linear-gradient(45deg, #0066cc, #0099ff);
+        }
+
+        .main-button.danger {
+            background: linear-gradient(45deg, #330000, #660000);
+            border-color: #ff3333;
+            color: #ff3333;
+            box-shadow: 0 5px 15px rgba(255, 51, 51, 0.3);
+        }
+
+        .main-button.danger:hover {
+            box-shadow: 0 8px 25px rgba(255, 51, 51, 0.4);
+            background: linear-gradient(45deg, #660000, #990000);
+        }
+
+        .glitch {
+            animation: glitch 0.3s ease-in-out;
+        }
+
+        @keyframes glitch {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-2px) translateY(2px); }
+            40% { transform: translateX(2px) translateY(-2px); }
+            60% { transform: translateX(-2px) translateY(-2px); }
+            80% { transform: translateX(2px) translateY(2px); }
+            100% { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="time-particles" id="timeParticles">
+        <!-- Particles will be added dynamically -->
+    </div>
+
+    <div class="time-machine-container">
+        <h1 class="title">⏰ TEMPORAL ACCESS SOLUTIONS ⏰</h1>
+        <p class="subtitle">When the present fails, try the past!</p>
+        
+        <div class="time-display">
+            <div class="current-time">
+                CURRENT TIMELINE: <span id="currentTime">2024 - Everything Blocked Era</span>
+            </div>
+            <div class="target-time">
+                TARGET TIMELINE: <span id="targetTime">1995 - The Golden Age of Unrestricted Internet</span>
+            </div>
+        </div>
+
+        <div class="time-machine" onclick="activateTimeMachine()" id="timeMachine">
+            ⏰
+        </div>
+
+        <div class="time-controls">
+            <button class="time-btn" onclick="setDestination('1995')">1995<br>Wild West Web</button>
+            <button class="time-btn" onclick="setDestination('2000')">2000<br>Y2K Survived</button>
+            <button class="time-btn" onclick="setDestination('2005')">2005<br>MySpace Era</button>
+            <button class="time-btn" onclick="setDestination('2010')">2010<br>Social Media Dawn</button>
+            <button class="time-btn" onclick="setDestination('2015')">2015<br>Peak Internet</button>
+            <button class="time-btn" onclick="setDestination('2020')">2020<br>Everything Changed</button>
+        </div>
+
+        <div class="quantum-status">
+            <div class="status-title">🔬 QUANTUM STATUS REPORT</div>
+            <div class="status-item">
+                <span>Temporal Flux Capacitor:</span>
+                <span style="color: #ff6666;">OVERLOADED</span>
+            </div>
+            <div class="status-item">
+                <span>Paradox Prevention Protocol:</span>
+                <span style="color: #ffff66;">PARTIALLY FUNCTIONAL</span>
+            </div>
+            <div class="status-item">
+                <span>Timeline Integrity:</span>
+                <span style="color: #ff6666;">COMPROMISED</span>
+            </div>
+            <div class="status-item">
+                <span>Blocked Content Probability:</span>
+                <span style="color: #66ff66;" id="blockProbability">99.9%</span>
+            </div>
+        </div>
+
+        <div class="parallel-universe-detector">
+            <div class="detector-title">🌌 PARALLEL UNIVERSE SCANNER</div>
+            <div class="universe-list" id="universeList">
+                <div class="universe-item blocked">Universe Alpha-1: Site blocked by interdimensional firewall</div>
+                <div class="universe-item blocked">Universe Beta-7: Content deleted by time police</div>
+                <div class="universe-item blocked">Universe Gamma-3: Website never existed here</div>
+                <div class="universe-item accessible">Universe Delta-9: Site accessible but in alien language</div>
+                <div class="universe-item blocked">Universe Epsilon-2: Blocked by butterfly effect</div>
+                <div class="universe-item blocked">Universe Zeta-5: Website replaced by cat videos</div>
+                <div class="universe-item blocked">Universe Eta-4: Site blocked by your future self</div>
+            </div>
+        </div>
+
+        <div class="temporal-log" id="temporalLog">
+            <div class="log-entry">TEMPORAL LOG INITIALIZED...</div>
+            <div class="log-entry">Scanning for accessible timelines...</div>
+            <div class="log-entry error">ERROR: All timelines show content blocking</div>
+            <div class="log-entry warning">WARNING: Temporal paradox detected</div>
+        </div>
+
+        <button class="main-button" onclick="scanTimelines()">🔍 Scan All Timelines</button>
+        <button class="main-button" onclick="quantumTunnel()">🌌 Attempt Quantum Tunnel</button>
+        <button class="main-button danger" onclick="acceptFate()">🏳️ Accept Temporal Reality</button>
+    </div>
+
+    <script>
+        let attempts = parseInt(localStorage.getItem('timeAttempts') || '0');
+        let currentDestination = '1995';
+        let temporalEnergy = 100;
+        let logEntries = [];
+
+        const destinations = {
+            '1995': 'Wild West Web - Unrestricted and Unfiltered',
+            '2000': 'Y2K Survived - Dial-up Paradise',
+            '2005': 'MySpace Era - Peak Social Freedom',
+            '2010': 'Social Media Dawn - Before the Algorithms',
+            '2015': 'Peak Internet - Maximum Content Access',
+            '2020': 'Everything Changed - The Great Blocking Began'
+        };
+
+        const sarcasticLogs = [
+            "Temporal signature detected... still blocked.",
+            "Alternative timeline accessed... also blocked.",
+            "Quantum entanglement achieved... content still inaccessible.",
+            "Time paradox created... paradoxically, still blocked.",
+            "Successfully traveled to 1995... site didn't exist yet.",
+            "Reached the dawn of internet... your content is still forbidden.",
+            "Found unblocked universe... it only has dial-up speed.",
+            "Timeline where site is accessible... but your browser doesn't exist.",
+            "Discovered universe without blocking... everyone speaks binary.",
+            "Successfully bypassed all blocks... content is in Comic Sans."
+        ];
+
+        const quantumExcuses = [
+            "Quantum decoherence has collapsed your probability of access.",
+            "The observer effect has made the content unobservable.",
+            "Schrödinger's website exists in a superposition of blocked/unblocked.",
+            "Your timeline has been quarantined by the Time Variance Authority.",
+            "The butterfly effect caused your great-grandmother to invent content blocking.",
+            "A temporal paradox prevents you from accessing content you've never seen.",
+            "The multiverse consensus is: this content shall remain blocked.",
+            "Your request violated the Prime Directive of Internet Access."
+        ];
+
+        function init() {
+            attempts++;
+            localStorage.setItem('timeAttempts', attempts.toString());
+            createTimeParticles();
+            updateTemporalStatus();
+            
+            // Add initial log entries
+            setTimeout(() => addLogEntry("Time traveler #" + attempts + " detected"), 1000);
+            setTimeout(() => addLogEntry("Analyzing temporal displacement possibilities...", "warning"), 2000);
+            setTimeout(() => addLogEntry("All timelines show identical blocking patterns", "error"), 3000);
+        }
+
+        function createTimeParticles() {
+            const container = document.getElementById('timeParticles');
+            
+            for (let i = 0; i < 15; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (5 + Math.random() * 6) + 's';
+                
+                // Random colors for particles
+                const colors = ['#00ff00', '#00cccc', '#ffff00', '#ff6600'];
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.boxShadow = `0 0 10px ${particle.style.background}`;
+                
+                container.appendChild(particle);
+            }
+        }
+
+        function setDestination(year) {
+            currentDestination = year;
+            document.getElementById('targetTime').textContent = 
+                `${year} - ${destinations[year]}`;
+            
+            addLogEntry(`Destination set: ${year}`, "success");
+            
+            // Update block probability based on year
+            let probability = 99.9;
+            if (year <= '2000') probability = 95.0;
+            else if (year <= '2010') probability = 87.5;
+            else if (year <= '2015') probability = 93.2;
+            
+            document.getElementById('blockProbability').textContent = probability + '%';
+        }
+
+        function activateTimeMachine() {
+            const machine = document.getElementById('timeMachine');
+            machine.classList.add('activated');
+            
+            temporalEnergy -= 25;
+            
+            addLogEntry("Time machine activated!", "success");
+            addLogEntry("Temporal displacement in progress...", "warning");
+            
+            setTimeout(() => {
+                machine.classList.remove('activated');
+                
+                const outcomes = [
+                    () => {
+                        addLogEntry(`Arrived in ${currentDestination}... site still blocked!`, "error");
+                        addLogEntry("Apparently, blocking transcends time and space.", "error");
+                    },
+                    () => {
+                        addLogEntry(`Temporal jump successful to ${currentDestination}!`, "success");
+                        addLogEntry("Content found! Wait... it's all cat pictures.", "warning");
+                        addLogEntry("Even the past had better memes than content.", "error");
+                    },
+                    () => {
+                        addLogEntry("Timeline accessed... but you don't have an account yet.", "error");
+                        addLogEntry("Forgot that registration hasn't been invented.", "warning");
+                    },
+                    () => {
+                        addLogEntry("Successfully bypassed all temporal blocks!", "success");
+                        addLogEntry("ERROR: Content is in a dead programming language.", "error");
+                    }
+                ];
+                
+                const randomOutcome = outcomes[Math.floor(Math.random() * outcomes.length)];
+                randomOutcome();
+                
+                // Random glitch effect
+                if (Math.random() < 0.3) {
+                    document.querySelector('.time-machine-container').classList.add('glitch');
+                    setTimeout(() => {
+                        document.querySelector('.time-machine-container').classList.remove('glitch');
+                    }, 300);
+                }
+                
+            }, 3000);
+        }
+
+        function scanTimelines() {
+            addLogEntry("Initiating multiversal scan...", "warning");
+            
+            const universeList = document.getElementById('universeList');
+            universeList.innerHTML = '';
+            
+            const universeTypes = [
+                { name: "Universe where content was never created", status: "blocked" },
+                { name: "Timeline where you're the admin (but still blocked)", status: "blocked" },
+                { name: "Reality where site exists but in interpretive dance form", status: "accessible" },
+                { name: "Dimension where all content is philosophical questions", status: "accessible" },
+                { name: "Universe where blocking is a religion", status: "blocked" },
+                { name: "Timeline where site is unblocked but costs $999/month", status: "accessible" },
+                { name: "Reality where content is accessible but cursed", status: "accessible" },
+                { name: "Dimension where your past self blocked it", status: "blocked" }
+            ];
+            
+            universeTypes.forEach((universe, index) => {
+                setTimeout(() => {
+                    const item = document.createElement('div');
+                    item.className = `universe-item ${universe.status}`;
+                    item.textContent = universe.name;
+                    item.onclick = () => {
+                        if (universe.status === 'accessible') {
+                            addLogEntry(`Attempting to access ${universe.name}...`, "warning");
+                            setTimeout(() => {
+                                addLogEntry("Access granted! Content loading...", "success");
+                                setTimeout(() => {
+                                    addLogEntry("ERROR: Universe collapsed due to paradox.", "error");
+                                }, 2000);
+                            }, 1500);
+                        } else {
+                            addLogEntry(`${universe.name} - Access denied.`, "error");
+                        }
+                    };
+                    universeList.appendChild(item);
+                    
+                    addLogEntry(`Scanning ${universe.name}...`);
+                }, index * 200);
+            });
+            
+            setTimeout(() => {
+                addLogEntry("Scan complete. Results: Still blocked everywhere.", "error");
+            }, universeTypes.length * 200 + 1000);
+        }
+
+        function quantumTunnel() {
+            addLogEntry("Attempting quantum tunneling...", "warning");
+            addLogEntry("Probability wave function collapsing...", "warning");
+            
+            setTimeout(() => {
+                const excuse = quantumExcuses[Math.floor(Math.random() * quantumExcuses.length)];
+                addLogEntry(excuse, "error");
+                
+                setTimeout(() => {
+                    addLogEntry("Quantum tunnel collapsed. You remain in blocked timeline.", "error");
+                }, 1500);
+            }, 2000);
+        }
+
+        function acceptFate() {
+            const responses = [
+                "Finally! Acceptance is the first step to digital enlightenment.",
+                "The wise time traveler knows when to stop traveling.",
+                "You have achieved temporal wisdom: some things are constant across all realities.",
+                "Breaking news: Local person discovers that some problems can't be solved with time travel.",
+                "The universe appreciates your acceptance of its cosmic joke.",
+                "Congratulations! You've unlocked the achievement: 'Temporal Wisdom'"
+            ];
+            
+            const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+            addLogEntry(randomResponse, "success");
+            
+            setTimeout(() => {
+                if (confirm("Would you like to return to your original timeline and try a different approach?\n\n(Spoiler: It won't work there either)")) {
+                    addLogEntry("Initiating return to original timeline...", "warning");
+                    setTimeout(() => {
+                        location.reload();
+                    }, 2000);
+                } else {
+                    addLogEntry("Staying in current timeline. Temporal resignation achieved.", "success");
+                }
+            }, 3000);
+        }
+
+        function addLogEntry(message, type = "normal") {
+            const log = document.getElementById('temporalLog');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+            
+            // Keep only last 20 entries
+            const entries = log.querySelectorAll('.log-entry');
+            if (entries.length > 20) {
+                entries[0].remove();
+            }
+        }
+
+        function updateTemporalStatus() {
+            // Simulate temporal energy depletion
+            setInterval(() => {
+                if (temporalEnergy > 0) {
+                    temporalEnergy -= 0.1;
+                    
+                    if (temporalEnergy < 50 && Math.random() < 0.05) {
+                        const randomLog = sarcasticLogs[Math.floor(Math.random() * sarcasticLogs.length)];
+                        addLogEntry(randomLog, "warning");
+                    }
+                }
+            }, 1000);
+        }
+
+        // Random temporal anomalies
+        setInterval(() => {
+            if (Math.random() < 0.1) { // 10% chance
+                const anomalies = [
+                    "Temporal anomaly detected in sector 7-G",
+                    "Chronoton particle surge measured",
+                    "Timeline convergence point approaching",
+                    "Paradox probability increasing",
+                    "Your future self sends regards (and blocks)"
+                ];
+                
+                const randomAnomaly = anomalies[Math.floor(Math.random() * anomalies.length)];
+                addLogEntry(randomAnomaly, "warning");
+            }
+        }, 15000);
+
+        // Initialize on page load
+        init();
+    </script>
+</body>
+</html>
