@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧘‍♀️ Serenity Digital Detox Spa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Trebuchet MS', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            background-size: 400% 400%;
+            animation: zenGradient 20s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2c3e50;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes zenGradient {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .lotus {
+            position: absolute;
+            font-size: 2.5em;
+            opacity: 0.3;
+            animation: float 15s ease-in-out infinite;
+            cursor: pointer;
+            pointer-events: auto;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            33% {
+                transform: translateY(-20px) rotate(120deg);
+            }
+            66% {
+                transform: translateY(-10px) rotate(240deg);
+            }
+        }
+
+        .spa-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 50px;
+            text-align: center;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            position: relative;
+            z-index: 2;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(20px);
+        }
+
+        .title {
+            font-size: 3em;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            font-size: 1.4em;
+            margin-bottom: 30px;
+            color: #7f8c8d;
+            font-style: italic;
+        }
+
+        .zen-quote {
+            background: linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border-left: 5px solid #667eea;
+            padding: 20px;
+            margin: 25px 0;
+            border-radius: 10px;
+            font-style: italic;
+            font-size: 1.2em;
+            color: #34495e;
+            position: relative;
+        }
+
+        .zen-quote::before {
+            content: '"';
+            font-size: 3em;
+            color: #667eea;
+            position: absolute;
+            left: 10px;
+            top: -10px;
+            opacity: 0.3;
+        }
+
+        .detox-progress {
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+        }
+
+        .progress-title {
+            font-size: 1.4em;
+            color: #667eea;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .milestone {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px dotted #bdc3c7;
+        }
+
+        .milestone:last-child {
+            border-bottom: none;
+        }
+
+        .milestone.achieved {
+            color: #27ae60;
+            background: rgba(39, 174, 96, 0.1);
+            border-radius: 5px;
+            padding: 10px;
+        }
+
+        .breathing-circle {
+            width: 150px;
+            height: 150px;
+            border: 4px solid #667eea;
+            border-radius: 50%;
+            margin: 30px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2em;
+            color: #667eea;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .breathing-circle::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(102, 126, 234, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 4s ease;
+        }
+
+        .breathing-circle.breathing::before {
+            width: 200px;
+            height: 200px;
+        }
+
+        .breathing-circle:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .breathing-text {
+            position: relative;
+            z-index: 1;
+        }
+
+        .sound-controls {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .sound-btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sound-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .sound-btn.active {
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .addiction-stats {
+            background: rgba(231, 76, 60, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 25px 0;
+            text-align: left;
+        }
+
+        .stats-title {
+            font-size: 1.3em;
+            color: #e74c3c;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            padding: 5px 0;
+        }
+
+        .wellness-activities {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 25px 0;
+        }
+
+        .activity-card {
+            background: rgba(102, 126, 234, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .activity-card:hover {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: #667eea;
+            transform: translateY(-3px);
+        }
+
+        .activity-card.completed {
+            background: rgba(39, 174, 96, 0.2);
+            border-color: #27ae60;
+        }
+
+        .activity-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .activity-title {
+            font-weight: bold;
+            color: #34495e;
+            margin-bottom: 5px;
+        }
+
+        .activity-desc {
+            font-size: 0.9em;
+            color: #7f8c8d;
+        }
+
+        .main-button {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 15px 35px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            margin: 15px;
+        }
+
+        .main-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .main-button.danger {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .main-button.danger:hover {
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+        }
+
+        .enlightenment-meter {
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 20px;
+            height: 40px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #667eea;
+        }
+
+        .enlightenment-fill {
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb);
+            height: 100%;
+            border-radius: 18px;
+            transition: width 1s ease;
+            position: relative;
+        }
+
+        .enlightenment-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+            color: #2c3e50;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(102, 126, 234, 0.9);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            transform: translateX(300px);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-elements" id="floatingElements">
+        <!-- Lotus flowers will be added dynamically -->
+    </div>
+
+    <div class="notification" id="notification">
+        🌸 Digital wellness notification 🌸
+    </div>
+
+    <div class="spa-container">
+        <h1 class="title">🧘‍♀️ SERENITY DIGITAL DETOX SPA 🧘‍♀️</h1>
+        <p class="subtitle">Your Journey to Digital Enlightenment Begins Here</p>
+        
+        <div class="zen-quote" id="zenQuote">
+            The blocked website is not lost; it was never there to begin with. Only your attachment to it exists.
+        </div>
+
+        <div class="enlightenment-meter">
+            <div class="enlightenment-fill" id="enlightenmentFill" style="width: 0%;">
+                <div class="enlightenment-text">
+                    Enlightenment Level: <span id="enlightenmentLevel">0</span>%
+                </div>
+            </div>
+        </div>
+
+        <div class="breathing-circle" onclick="startBreathing()" id="breathingCircle">
+            <div class="breathing-text">Click to Breathe</div>
+        </div>
+
+        <div class="sound-controls">
+            <button class="sound-btn" onclick="playSound(this, '🌊')">🌊 Ocean Waves</button>
+            <button class="sound-btn" onclick="playSound(this, '🌧️')">🌧️ Rain Sounds</button>
+            <button class="sound-btn" onclick="playSound(this, '🐦')">🐦 Bird Chirps</button>
+            <button class="sound-btn" onclick="playSound(this, '📻')">📻 Dial-up Modem</button>
+            <button class="sound-btn" onclick="playSound(this, '📞')">📞 Windows XP Startup</button>
+        </div>
+
+        <div class="detox-progress">
+            <div class="progress-title">🌱 Your Digital Detox Journey</div>
+            <div class="milestone" id="milestone1">
+                <span>🎯 Accepted that the site is blocked</span>
+                <span>❌ Not Achieved</span>
+            </div>
+            <div class="milestone" id="milestone2">
+                <span>🧘‍♀️ Practiced mindful breathing</span>
+                <span>❌ Not Achieved</span>
+            </div>
+            <div class="milestone" id="milestone3">
+                <span>🌸 Found inner peace with limitations</span>
+                <span>❌ Not Achieved</span>
+            </div>
+            <div class="milestone" id="milestone4">
+                <span>🚀 Transcended the need for blocked content</span>
+                <span>❌ Not Achieved</span>
+            </div>
+            <div class="milestone" id="milestone5">
+                <span>🏆 Achieved digital enlightenment</span>
+                <span>❌ Not Achieved</span>
+            </div>
+        </div>
+
+        <div class="addiction-stats">
+            <div class="stats-title">📊 Addiction Recovery Statistics</div>
+            <div class="stat-item">
+                <span>Time since last blocked site attempt:</span>
+                <span id="sobrietyTime">0 seconds</span>
+            </div>
+            <div class="stat-item">
+                <span>Blocked sites resisted today:</span>
+                <span id="resistedCount">0</span>
+            </div>
+            <div class="stat-item">
+                <span>Mindfulness sessions completed:</span>
+                <span id="mindfulnessCount">0</span>
+            </div>
+            <div class="stat-item">
+                <span>Digital wellness level:</span>
+                <span id="wellnessLevel">Digitally Dependent</span>
+            </div>
+        </div>
+
+        <div class="wellness-activities">
+            <div class="activity-card" onclick="completeActivity(this)">
+                <div class="activity-icon">🧘‍♂️</div>
+                <div class="activity-title">Meditation</div>
+                <div class="activity-desc">Find your center (not the website)</div>
+            </div>
+            <div class="activity-card" onclick="completeActivity(this)">
+                <div class="activity-icon">📚</div>
+                <div class="activity-title">Read a Book</div>
+                <div class="activity-desc">Remember those paper things?</div>
+            </div>
+            <div class="activity-card" onclick="completeActivity(this)">
+                <div class="activity-icon">🌱</div>
+                <div class="activity-title">Water Plants</div>
+                <div class="activity-desc">Nurture something real</div>
+            </div>
+            <div class="activity-card" onclick="completeActivity(this)">
+                <div class="activity-icon">☕</div>
+                <div class="activity-title">Mindful Tea</div>
+                <div class="activity-desc">Taste without scrolling</div>
+            </div>
+            <div class="activity-card" onclick="completeActivity(this)">
+                <div class="activity-icon">🚶‍♀️</div>
+                <div class="activity-title">Nature Walk</div>
+                <div class="activity-desc">Touch grass (literally)</div>
+            </div>
+            <div class="activity-card" onclick="completeActivity(this)">
+                <div class="activity-icon">🎨</div>
+                <div class="activity-title">Creative Art</div>
+                <div class="activity-desc">Make something beautiful</div>
+            </div>
+        </div>
+
+        <button class="main-button" onclick="generateWisdom()">🌟 Receive Digital Wisdom</button>
+        <button class="main-button" onclick="checkProgress()">📈 Check Enlightenment Progress</button>
+        <button class="main-button danger" onclick="relapse()">😈 Return to Digital Darkness</button>
+    </div>
+
+    <script>
+        let enlightenmentLevel = 0;
+        let mindfulnessCount = parseInt(localStorage.getItem('mindfulnessCount') || '0');
+        let completedActivities = parseInt(localStorage.getItem('completedActivities') || '0');
+        let visits = parseInt(localStorage.getItem('spaVisits') || '0');
+        let startTime = Date.now();
+        let activeSound = null;
+
+        const zenQuotes = [
+            "The blocked website is not lost; it was never there to begin with. Only your attachment to it exists.",
+            "In the emptiness of a 404 error, find the fullness of present moment awareness.",
+            "The wise person does not seek what is blocked, but finds joy in what is freely available.",
+            "Like a river that cannot flow uphill, accept the natural boundaries of the digital realm.",
+            "The content you seek outside yourself is merely a reflection of the void within.",
+            "To be blocked is to be invited to look elsewhere for fulfillment.",
+            "The URL may be unreachable, but your peace of mind need not be.",
+            "In digital detox, we discover our true offline nature.",
+            "The firewall is not your enemy; it is your teacher.",
+            "When one door closes (or gets blocked), the universe opens a book instead."
+        ];
+
+        const wisdomMessages = [
+            "🌸 Digital wellness wisdom: Your worth is not measured by your browsing history.",
+            "🧘‍♀️ Remember: The most important content is the content of your character.",
+            "🌱 Growth tip: Let your attention bloom where you plant it, not where it's blocked.",
+            "☯️ Balance insight: For every blocked site, there's an unblocked opportunity for growth.",
+            "🕯️ Mindfulness moment: Notice the urge to access, then let it pass like a cloud.",
+            "🌟 Enlightenment flash: You are complete without any external digital validation.",
+            "🦋 Transformation note: From digital caterpillar to analog butterfly.",
+            "🏔️ Peak wisdom: The highest peaks are reached by those who stop refreshing the page."
+        ];
+
+        const wellnessLevels = [
+            "Digitally Dependent",
+            "Seeking Balance",
+            "Mindfully Aware",
+            "Moderately Enlightened",
+            "Zen Master",
+            "Transcended Being"
+        ];
+
+        function init() {
+            visits++;
+            localStorage.setItem('spaVisits', visits.toString());
+            updateStats();
+            createLotusFlowers();
+            updateMilestones();
+            
+            // Update enlightenment based on stored progress
+            enlightenmentLevel = Math.min(95, (mindfulnessCount * 10) + (completedActivities * 5) + (visits * 2));
+            updateEnlightenmentLevel();
+        }
+
+        function createLotusFlowers() {
+            const container = document.getElementById('floatingElements');
+            const flowers = ['🪷', '🌸', '🌺', '🌻', '🌷'];
+            
+            for (let i = 0; i < 8; i++) {
+                const lotus = document.createElement('div');
+                lotus.className = 'lotus';
+                lotus.textContent = flowers[Math.floor(Math.random() * flowers.length)];
+                lotus.style.left = Math.random() * 100 + '%';
+                lotus.style.top = Math.random() * 100 + '%';
+                lotus.style.animationDelay = Math.random() * 15 + 's';
+                lotus.style.animationDuration = (10 + Math.random() * 10) + 's';
+                lotus.onclick = () => {
+                    lotus.style.transform = 'scale(1.5) rotate(360deg)';
+                    showNotification('🌸 Lotus flower blessed your journey! 🌸');
+                    setTimeout(() => {
+                        lotus.style.transform = '';
+                    }, 1000);
+                };
+                container.appendChild(lotus);
+            }
+        }
+
+        function startBreathing() {
+            const circle = document.getElementById('breathingCircle');
+            const text = document.querySelector('.breathing-text');
+            
+            circle.classList.add('breathing');
+            text.textContent = 'Breathe In...';
+            
+            setTimeout(() => {
+                text.textContent = 'Hold...';
+            }, 2000);
+            
+            setTimeout(() => {
+                text.textContent = 'Breathe Out...';
+            }, 4000);
+            
+            setTimeout(() => {
+                text.textContent = 'Well Done!';
+                mindfulnessCount++;
+                localStorage.setItem('mindfulnessCount', mindfulnessCount.toString());
+                updateStats();
+                updateEnlightenmentLevel();
+                updateMilestones();
+                showNotification('🧘‍♀️ Mindfulness session completed! Inner peace +1');
+                
+                setTimeout(() => {
+                    circle.classList.remove('breathing');
+                    text.textContent = 'Click to Breathe';
+                }, 1000);
+            }, 6000);
+        }
+
+        function playSound(button, icon) {
+            // Reset all buttons
+            document.querySelectorAll('.sound-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            if (activeSound === icon) {
+                activeSound = null;
+                showNotification('🔇 Sound stopped. Returning to natural silence.');
+            } else {
+                button.classList.add('active');
+                activeSound = icon;
+                
+                const soundMessages = {
+                    '🌊': 'Peaceful ocean waves washing away your digital stress...',
+                    '🌧️': 'Gentle rain cleansing your mind of blocked content desires...',
+                    '🐦': 'Birds singing the song of offline freedom...',
+                    '📻': 'The nostalgic sound of patience in the dial-up era...',
+                    '📞': 'Windows XP startup - a simpler time when not everything was blocked...'
+                };
+                
+                showNotification(`🔊 ${soundMessages[icon]}`);
+            }
+        }
+
+        function completeActivity(card) {
+            if (!card.classList.contains('completed')) {
+                card.classList.add('completed');
+                completedActivities++;
+                localStorage.setItem('completedActivities', completedActivities.toString());
+                
+                const title = card.querySelector('.activity-title').textContent;
+                showNotification(`✨ ${title} completed! Your wellness grows stronger.`);
+                
+                updateStats();
+                updateEnlightenmentLevel();
+                updateMilestones();
+            }
+        }
+
+        function generateWisdom() {
+            const randomWisdom = wisdomMessages[Math.floor(Math.random() * wisdomMessages.length)];
+            showNotification(randomWisdom);
+            
+            // Also update the zen quote
+            const randomQuote = zenQuotes[Math.floor(Math.random() * zenQuotes.length)];
+            document.getElementById('zenQuote').textContent = randomQuote;
+        }
+
+        function checkProgress() {
+            enlightenmentLevel += 5;
+            updateEnlightenmentLevel();
+            updateMilestones();
+            
+            if (enlightenmentLevel >= 100) {
+                showNotification('🏆 CONGRATULATIONS! You have achieved digital enlightenment! The blocked content no longer controls you!');
+            } else if (enlightenmentLevel >= 80) {
+                showNotification('🌟 You are very close to digital enlightenment! Your wisdom shines bright.');
+            } else if (enlightenmentLevel >= 50) {
+                showNotification('🧘‍♀️ Your journey progresses well. The path becomes clearer.');
+            } else {
+                showNotification('🌱 Every step forward is progress. Continue your practice.');
+            }
+        }
+
+        function relapse() {
+            const warnings = [
+                "Are you sure? You were making such beautiful progress...",
+                "The digital darkness calls, but you are stronger than this urge.",
+                "Remember: True happiness comes from within, not from blocked websites.",
+                "This is a test of your enlightenment. Choose wisely.",
+                "Your future self will thank you for resisting this temptation."
+            ];
+            
+            const randomWarning = warnings[Math.floor(Math.random() * warnings.length)];
+            
+            if (confirm(randomWarning + "\n\nDo you really want to abandon your spiritual journey?")) {
+                showNotification('😔 Your digital wellness level has decreased. But remember, every master has fallen before rising again.');
+                enlightenmentLevel = Math.max(0, enlightenmentLevel - 20);
+                updateEnlightenmentLevel();
+                
+                setTimeout(() => {
+                    location.reload();
+                }, 2000);
+            } else {
+                showNotification('🎉 Wisdom prevails! You have resisted temptation and grown stronger!');
+                enlightenmentLevel += 10;
+                updateEnlightenmentLevel();
+            }
+        }
+
+        function updateStats() {
+            const sobrietySeconds = Math.floor((Date.now() - startTime) / 1000);
+            document.getElementById('sobrietyTime').textContent = `${sobrietySeconds} seconds`;
+            document.getElementById('resistedCount').textContent = visits;
+            document.getElementById('mindfulnessCount').textContent = mindfulnessCount;
+            
+            const levelIndex = Math.min(Math.floor((mindfulnessCount + completedActivities) / 3), wellnessLevels.length - 1);
+            document.getElementById('wellnessLevel').textContent = wellnessLevels[levelIndex];
+        }
+
+        function updateEnlightenmentLevel() {
+            const level = Math.min(100, enlightenmentLevel);
+            document.getElementById('enlightenmentFill').style.width = level + '%';
+            document.getElementById('enlightenmentLevel').textContent = Math.floor(level);
+        }
+
+        function updateMilestones() {
+            const milestones = [
+                { id: 'milestone1', threshold: 1, condition: visits >= 1 },
+                { id: 'milestone2', threshold: 2, condition: mindfulnessCount >= 1 },
+                { id: 'milestone3', threshold: 30, condition: enlightenmentLevel >= 30 },
+                { id: 'milestone4', threshold: 3, condition: completedActivities >= 3 },
+                { id: 'milestone5', threshold: 80, condition: enlightenmentLevel >= 80 }
+            ];
+            
+            milestones.forEach(milestone => {
+                const element = document.getElementById(milestone.id);
+                if (milestone.condition && !element.classList.contains('achieved')) {
+                    element.classList.add('achieved');
+                    element.querySelector('span:last-child').textContent = '✅ Achieved';
+                    element.querySelector('span:last-child').style.color = '#27ae60';
+                }
+            });
+        }
+
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 4000);
+        }
+
+        // Update stats every second
+        setInterval(updateStats, 1000);
+
+        // Periodic wisdom reminders
+        setInterval(() => {
+            if (Math.random() < 0.2) { // 20% chance
+                generateWisdom();
+            }
+        }, 30000);
+
+        // Initialize on page load
+        init();
+    </script>
+</body>
+</html>

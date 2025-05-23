@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🔒 Digital Penitentiary - Maximum Security</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(45deg, #2c3e50, #34495e, #2c3e50);
+            background-size: 400% 400%;
+            animation: prisonLights 10s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ecf0f1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        @keyframes prisonLights {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .prison-container {
+            background: rgba(52, 73, 94, 0.9);
+            border: 4px solid #7f8c8d;
+            border-radius: 15px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 
+                inset 0 0 50px rgba(0, 0, 0, 0.5),
+                0 20px 40px rgba(0, 0, 0, 0.3);
+            max-width: 700px;
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+
+        .prison-bars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 80px,
+                #7f8c8d 80px,
+                #7f8c8d 85px
+            );
+            pointer-events: none;
+            border-radius: 15px;
+            animation: barShift 8s ease-in-out infinite;
+        }
+
+        @keyframes barShift {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(5px); }
+        }
+
+        .title {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            color: #e74c3c;
+            text-shadow: 
+                0 0 10px #e74c3c,
+                2px 2px 4px rgba(0, 0, 0, 0.8);
+            font-weight: bold;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+            color: #bdc3c7;
+            font-style: italic;
+        }
+
+        .prisoner-id {
+            background: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .escape-attempts {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .attempt-title {
+            font-size: 1.4em;
+            color: #e74c3c;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .attempt-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px dashed #7f8c8d;
+        }
+
+        .attempt-item:last-child {
+            border-bottom: none;
+        }
+
+        .progress-bar {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            height: 30px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            height: 100%;
+            border-radius: 10px;
+            transition: width 2s ease;
+            position: relative;
+        }
+
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+
+        .escape-plan {
+            background: rgba(0, 0, 0, 0.2);
+            border: 2px dashed #7f8c8d;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .escape-plan:hover {
+            background: rgba(0, 0, 0, 0.4);
+            border-color: #e74c3c;
+        }
+
+        .plan-title {
+            font-size: 1.2em;
+            color: #f39c12;
+            margin-bottom: 10px;
+        }
+
+        .plan-steps {
+            text-align: left;
+            color: #bdc3c7;
+        }
+
+        .plan-step {
+            margin: 5px 0;
+            opacity: 0;
+            animation: fadeInStep 0.5s ease forwards;
+        }
+
+        .plan-step:nth-child(1) { animation-delay: 0.1s; }
+        .plan-step:nth-child(2) { animation-delay: 0.2s; }
+        .plan-step:nth-child(3) { animation-delay: 0.3s; }
+        .plan-step:nth-child(4) { animation-delay: 0.4s; }
+
+        @keyframes fadeInStep {
+            to { opacity: 1; }
+        }
+
+        .guard {
+            font-size: 3em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin: 20px;
+            position: relative;
+            animation: patrol 4s ease-in-out infinite;
+        }
+
+        @keyframes patrol {
+            0%, 100% { transform: translateX(-20px); }
+            50% { transform: translateX(20px); }
+        }
+
+        .guard:hover {
+            animation-play-state: paused;
+            transform: scale(1.2) rotate(10deg);
+        }
+
+        .guard.alerted {
+            color: #e74c3c;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .button {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+            margin: 10px;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 20px rgba(231, 76, 60, 0.4);
+        }
+
+        .button:active {
+            transform: translateY(0);
+        }
+
+        .alert-box {
+            background: #e74c3c;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            display: none;
+            animation: alertBlink 1s ease-in-out infinite;
+        }
+
+        @keyframes alertBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .searchlight {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: searchlight 8s linear infinite;
+        }
+
+        @keyframes searchlight {
+            0% { 
+                top: 10%; 
+                left: 10%; 
+                transform: scale(1);
+            }
+            25% { 
+                top: 10%; 
+                right: 10%; 
+                left: auto;
+                transform: scale(1.5);
+            }
+            50% { 
+                bottom: 10%; 
+                right: 10%; 
+                top: auto;
+                transform: scale(1);
+            }
+            75% { 
+                bottom: 10%; 
+                left: 10%; 
+                right: auto;
+                transform: scale(1.2);
+            }
+            100% { 
+                top: 10%; 
+                left: 10%; 
+                bottom: auto;
+                transform: scale(1);
+            }
+        }
+
+        .sentence-info {
+            background: rgba(0, 0, 0, 0.5);
+            border-left: 4px solid #e74c3c;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="searchlight"></div>
+    
+    <div class="prison-container">
+        <div class="prison-bars"></div>
+        
+        <h1 class="title">🔒 DIGITAL PENITENTIARY 🔒</h1>
+        <p class="subtitle">Maximum Security Content Detention Center</p>
+        
+        <div class="prisoner-id">
+            PRISONER #<span id="prisonerId">404</span> - CHRONIC SITE OFFENDER
+        </div>
+
+        <div class="sentence-info">
+            <strong>📋 CONVICTION DETAILS:</strong><br>
+            Crime: Repeated attempts to access restricted digital content<br>
+            Sentence: <span id="sentence">Life without WiFi</span><br>
+            Time Served: <span id="timeServed">0 minutes</span><br>
+            Remaining: <span id="remaining">∞ years</span>
+        </div>
+
+        <div class="escape-attempts">
+            <div class="attempt-title">🗂️ ESCAPE ATTEMPT HISTORY</div>
+            <div class="attempt-item">
+                <span>🚪 Direct URL Access</span>
+                <span style="color: #e74c3c;">FAILED</span>
+            </div>
+            <div class="attempt-item">
+                <span>🔄 Page Refresh Spam</span>
+                <span style="color: #e74c3c;">FAILED</span>
+            </div>
+            <div class="attempt-item">
+                <span>🌐 Incognito Mode</span>
+                <span style="color: #e74c3c;">FAILED</span>
+            </div>
+            <div class="attempt-item">
+                <span>📱 Mobile Browser Switch</span>
+                <span style="color: #e74c3c;">FAILED</span>
+            </div>
+            <div class="attempt-item">
+                <span>🧙‍♂️ Wishful Thinking</span>
+                <span style="color: #e74c3c;">SURPRISINGLY FAILED</span>
+            </div>
+        </div>
+
+        <div class="progress-bar" onclick="digTunnel()">
+            <div class="progress-fill" id="tunnelProgress" style="width: 0%;">
+                <div class="progress-text">🕳️ TUNNEL PROGRESS: <span id="progressPercent">0</span>%</div>
+            </div>
+        </div>
+
+        <div class="escape-plan" onclick="revealPlan(this)">
+            <div class="plan-title">📋 MASTER ESCAPE PLAN #<span id="planNumber">1</span></div>
+            <div class="plan-steps">
+                <div class="plan-step">1. Dig tunnel with mouse clicks</div>
+                <div class="plan-step">2. Avoid guard patrols</div>
+                <div class="plan-step">3. Hack mainframe with enthusiasm</div>
+                <div class="plan-step">4. Accept that this won't work</div>
+            </div>
+        </div>
+
+        <div class="guard" onclick="alertGuard(this)" title="Click to alert the guard (bad idea)">
+            👮‍♂️
+        </div>
+
+        <div class="alert-box" id="alertBox">
+            🚨 SECURITY BREACH DETECTED! All tunnels have been sealed! 🚨
+        </div>
+
+        <button class="button" onclick="digTunnel()">🕳️ Dig Tunnel</button>
+        <button class="button" onclick="newEscapePlan()">📋 New Escape Plan</button>
+        <button class="button" onclick="surrender()">🏳️ Surrender (Recommended)</button>
+    </div>
+
+    <script>
+        let attempts = parseInt(localStorage.getItem('escapeAttempts') || '0');
+        let tunnelProgress = 0;
+        let planNumber = 1;
+        let guardAlerted = false;
+
+        const escapePlans = [
+            {
+                title: "SPOON TUNNEL METHOD",
+                steps: [
+                    "1. Acquire digital spoon (browser dev tools)",
+                    "2. Dig through firewall (click repeatedly)",
+                    "3. Crawl through internet tubes",
+                    "4. Realize this is still blocked"
+                ]
+            },
+            {
+                title: "TROJAN HORSE STRATEGY",
+                steps: [
+                    "1. Hide inside a legitimate website",
+                    "2. Wait for admin to visit",
+                    "3. Jump out and say 'Gotcha!'",
+                    "4. Get immediately re-blocked"
+                ]
+            },
+            {
+                title: "TIME TRAVEL APPROACH",
+                steps: [
+                    "1. Go back to before the site was blocked",
+                    "2. Access content in the past",
+                    "3. Return to present with screenshots",
+                    "4. Discover screenshots are also blocked"
+                ]
+            },
+            {
+                title: "SOCIAL ENGINEERING",
+                steps: [
+                    "1. Befriend the system administrator",
+                    "2. Invite them to your birthday party",
+                    "3. Ask nicely for access",
+                    "4. Get laughed at and blocked harder"
+                ]
+            },
+            {
+                title: "QUANTUM TUNNELING",
+                steps: [
+                    "1. Become a quantum particle",
+                    "2. Phase through the firewall",
+                    "3. Exist in superposition (blocked/unblocked)",
+                    "4. Collapse into blocked state when observed"
+                ]
+            }
+        ];
+
+        const sarcasticResponses = [
+            "Oh, you sweet summer child. Still trying, I see.",
+            "The definition of insanity is... well, this.",
+            "Your determination is admirable and concerning.",
+            "Perhaps it's time to pick up a hobby. Like knitting.",
+            "The only thing you're escaping is productivity.",
+            "This is more entertaining than the content you're trying to reach.",
+            "I've seen prison movies. This isn't how it works.",
+            "Maybe the real treasure was the time you wasted along the way."
+        ];
+
+        function init() {
+            attempts++;
+            localStorage.setItem('escapeAttempts', attempts.toString());
+            
+            document.getElementById('prisonerId').textContent = 404 + attempts;
+            document.getElementById('timeServed').textContent = `${attempts * 3} minutes`;
+            
+            if (attempts > 10) {
+                document.getElementById('sentence').textContent = 'Double life without WiFi';
+            } else if (attempts > 20) {
+                document.getElementById('sentence').textContent = 'Eternal digital exile';
+            }
+        }
+
+        function digTunnel() {
+            if (guardAlerted) {
+                showAlert("🚨 GUARDS ARE WATCHING! TUNNEL PROGRESS RESET! 🚨");
+                tunnelProgress = 0;
+                guardAlerted = false;
+                document.querySelector('.guard').classList.remove('alerted');
+            } else {
+                tunnelProgress += Math.random() * 15 + 5;
+                if (tunnelProgress > 100) {
+                    tunnelProgress = 0;
+                    showAlert("🕳️ TUNNEL COLLAPSED! You dug too greedily and too deep! 🕳️");
+                }
+            }
+            
+            document.getElementById('tunnelProgress').style.width = Math.min(tunnelProgress, 100) + '%';
+            document.getElementById('progressPercent').textContent = Math.floor(Math.min(tunnelProgress, 100));
+            
+            if (tunnelProgress >= 100) {
+                setTimeout(() => {
+                    showAlert("🎉 TUNNEL COMPLETE! Wait... it leads to another blocked page. 🎉");
+                    tunnelProgress = 0;
+                    document.getElementById('tunnelProgress').style.width = '0%';
+                    document.getElementById('progressPercent').textContent = '0';
+                }, 1000);
+            }
+        }
+
+        function alertGuard(guard) {
+            guardAlerted = true;
+            guard.classList.add('alerted');
+            showAlert("🚨 YOU FOOL! WHY DID YOU CLICK THE GUARD?! 🚨");
+            
+            setTimeout(() => {
+                guard.classList.remove('alerted');
+            }, 2000);
+        }
+
+        function revealPlan(planElement) {
+            const plan = escapePlans[planNumber % escapePlans.length];
+            planElement.querySelector('.plan-title').innerHTML = `📋 ${plan.title}`;
+            
+            const stepsContainer = planElement.querySelector('.plan-steps');
+            stepsContainer.innerHTML = '';
+            
+            plan.steps.forEach((step, index) => {
+                const stepDiv = document.createElement('div');
+                stepDiv.className = 'plan-step';
+                stepDiv.textContent = step;
+                stepDiv.style.animationDelay = (index * 0.1) + 's';
+                stepsContainer.appendChild(stepDiv);
+            });
+            
+            planNumber++;
+        }
+
+        function newEscapePlan() {
+            const planElement = document.querySelector('.escape-plan');
+            revealPlan(planElement);
+            
+            document.getElementById('planNumber').textContent = planNumber;
+        }
+
+        function surrender() {
+            const responses = [
+                "Finally! Some common sense!",
+                "Wisdom comes to those who wait... and give up.",
+                "Your surrender has been noted in your permanent record.",
+                "Perhaps now you can find inner peace. Or Netflix.",
+                "The system commends your eventual rationality.",
+                "Breaking: Local person discovers the meaning of 'blocked'."
+            ];
+            
+            const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+            showAlert(`🏳️ ${randomResponse} 🏳️`);
+            
+            setTimeout(() => {
+                if (confirm("Would you like to try a different blocked site? (Spoiler: it won't work)")) {
+                    location.reload();
+                }
+            }, 3000);
+        }
+
+        function showAlert(message) {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.textContent = message;
+            alertBox.style.display = 'block';
+            
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 3000);
+        }
+
+        // Random sarcastic comments
+        setInterval(() => {
+            if (Math.random() < 0.1) { // 10% chance every interval
+                const randomResponse = sarcasticResponses[Math.floor(Math.random() * sarcasticResponses.length)];
+                showAlert(randomResponse);
+            }
+        }, 15000);
+
+        // Initialize on page load
+        init();
+    </script>
+</body>
+</html>

@@ -2,23 +2,7 @@
 // This file runs as a service worker in the background
 
 // Define message types for better type safety
-interface MessageRequest {
-  action: string;
-  url?: string;
-  timestamp?: number;
-  currentUrl?: string;
-  userAgent?: string;
-  pageTitle?: string;
-  timeSpent?: number;
-  [key: string]: unknown;
-}
-
-interface MessageResponse {
-  status?: string;
-  success?: boolean;
-  message?: string;
-  [key: string]: unknown;
-}
+import type { MessageRequest, MessageResponse } from './types/background';
 
 console.log('Background service worker initialized');
 
