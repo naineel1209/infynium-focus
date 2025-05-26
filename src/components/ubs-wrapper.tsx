@@ -105,7 +105,7 @@ const UbsWrapper = () => {
                                 id: Date.now().toString(),
                             };
 
-                            setBlockedSites([newSite]);
+                            setBlockedSites((prev) => [...(prev || []), newSite]);
                             setNewBlockedSite({ id: '', url: '', blockedDays: [] });
                             alert('Blocked site added successfully!');
                         }}
