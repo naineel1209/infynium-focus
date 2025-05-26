@@ -1,7 +1,7 @@
 interface BlockedSite {
     id: string;
     url: string;
-    blockedDays: Number[]; // Array of days when the site is blocked, e.g., ['Monday', 'Tuesday']
+    blockedDays: number[]; // Array of day indices when the site is blocked, e.g., [0, 1] for Sunday and Monday
 }
 
 interface UbsWrapper {
