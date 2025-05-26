@@ -7,7 +7,7 @@
 export function getDataFromStorage<T>(key: string): Promise<T | null> {
     return new Promise((resolve) => {
         chrome.storage.local.get(key, (result) => {
-            resolve(result[key] || null);
+            resolve(key in result ? result[key] : null);
         });
     });
 }
