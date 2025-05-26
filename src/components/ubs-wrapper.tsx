@@ -24,7 +24,7 @@ const UbsWrapper = () => {
     // Save to Chrome storage on change
     useEffect(() => {
         if (blockedSites) {
-            chrome.storage.sync.set({ [CHROME_STORAGE_KEY]: blockedSites });
+            chrome.storage.local.set({ [CHROME_STORAGE_KEY]: blockedSites });
         }
     }, [blockedSites]);
 
