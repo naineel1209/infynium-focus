@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './App.css';
+import UbsWrapper from '../components/ubs-wrapper';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -27,7 +28,8 @@ function App() {
 
   return (
     <>
-      <h1>Hard Refresh Extension</h1>
+      <h1>Unlimited Block Sites</h1>
+      <UbsWrapper />
       <div className="card">
         <button onClick={handleButtonClick}>
           <span>Hard Reload</span>
