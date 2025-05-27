@@ -16,6 +16,11 @@ const UbsWrapper = () => {
     useEffect(() => {
         const fetchData = async () => {
             const data = await getDataFromStorage<BlockedSite[]>(CHROME_STORAGE_KEY);
+
+            if (data && data.length === 0) {
+                setBlockedSites([]);
+            }
+
             setBlockedSites(data || []);
         };
         fetchData();
