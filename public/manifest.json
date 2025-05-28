@@ -7,10 +7,12 @@
         "storage",
         "tabs",
         "browsingData",
-        "activeTabs"
+        "webRequest",
+        "notifications"
     ],
     "background": {
-        "service_worker": "background.js"
+        "service_worker": "background.js",
+        "type": "module"
     },
     "action": {
         "default_popup": "index.html"

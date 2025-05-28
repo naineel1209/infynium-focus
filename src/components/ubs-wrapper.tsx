@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { BlockedSite } from '../types/ubs-wrapper';
+import { CHROME_STORAGE_KEY, DAYS } from '../utils/constants';
 import { getDataFromStorage } from '../utils/utils';
-import { DAYS, CHROME_STORAGE_KEY } from '../utils/constants';
 
 const UbsWrapper = () => {
     const [isEditing, setIsEditing] = useState(false);
@@ -16,6 +16,7 @@ const UbsWrapper = () => {
     useEffect(() => {
         const fetchData = async () => {
             const data = await getDataFromStorage<BlockedSite[]>(CHROME_STORAGE_KEY);
+
             setBlockedSites(data || []);
         };
         fetchData();

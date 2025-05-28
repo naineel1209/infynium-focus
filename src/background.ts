@@ -2,153 +2,79 @@
 // This file runs as a service worker in the background
 
 // Define message types for better type safety
-import type { MessageRequest, MessageResponse } from './types/background';
+// import type { MessageRequest, MessageResponse } from './types/background'; 
+import type { BlockedSite } from './types/ubs-wrapper';
+import { CHROME_STORAGE_KEY } from './utils/constants';
+
+const blocked_sites_redirect_files = [
+  'blocked/escape.html',
+  'blocked/intervention.html',
+  'blocked/persistence.html',
+  'blocked/spa.html',
+  'blocked/timetravel.html'
+];
 
 console.log('Background service worker initialized');
 
-// Example: Listen for installation
+async function isSiteBlocked(url: string): Promise<boolean> {
+  //A site is blocked if the URL's hostname is in the block list
+  return new Promise((resolve) => {
+    chrome.storage.local.get([CHROME_STORAGE_KEY], (result) => {
+      const blockList: BlockedSite[] = result[CHROME_STORAGE_KEY] || [] as BlockedSite[];
+      const hostname = new URL(url).hostname;
+      const currentDay = new Date().getDay(); // Get the current day of the week (0-6, where 0 is Sunday)
+
+      // Check if the hostname is in the block list
+      // x.com [BlockedSite] -> x.com [Tab URL] -> true
+      // x.com [BlockedSite] -> business.x.com [Tab URL] -> true
+      // x.com [BlockedSite] -> business.facebook.com [Tab URL] -> false - as the hostname does not match
+      // business.x.com [BlockedSite] -> x.com [Tab URL] -> false - as the hostname does not match
+      // This will check if any of the blocked sites' hostnames match the current tab's hostname
+      // Using URL constructor to ensure we are comparing hostnames correctly
+      const isBlocked = blockList.some(
+        (site: BlockedSite) => {
+          const siteHostname = new URL(site.url).hostname;
+
+          return (
+            hostname === siteHostname || hostname.endsWith(`.${siteHostname}`) // Check if the hostname matches or is a subdomain
+            // e.g., x.com matches x.com and business.x.com, but not business.facebook.com
+          ) &&
+            (site.blockedDays.length === 7 || site.blockedDays.includes(currentDay)) // Check if the current day is in the block list or the list has 7 elements (blocked every day)
+        }
+      );
+      resolve(isBlocked);
+    })
+  })
+}
+
+//Listen for installation
 chrome.runtime.onInstalled.addListener((details) => {
   console.log('Extension installed:', details.reason);
-  
+
   // You could initialize storage, set default values, etc.
-  chrome.storage.local.set({ 
-    enabled: true,
-    blockedSites: [],
-    bypassMethods: ['proxy', 'cache']
+  chrome.storage.local.set({
+    [CHROME_STORAGE_KEY]: []
   });
 });
 
-// Example: Listen for tab updates
-chrome.tabs.onUpdated.addListener((_, changeInfo, tab) => {
-  // Only run when the page is fully loaded
+
+//Listen for update events on tabs
+chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
+  // We will check for completed status event
   if (changeInfo.status === 'complete' && tab.url) {
-    console.log('Tab updated:', tab.url);
-    
-    // Check if this is a blocked site that needs bypassing
-    // Your logic here...
-  }
-});
+    // check if the URL is in the block list and take action
+    if (await isSiteBlocked(tab.url)) {
+      console.log('Blocked site detected:', tab.url);
 
-// Enhanced message handling from popup or content scripts
-chrome.runtime.onMessage.addListener((message: MessageRequest, sender, sendResponse: (response: MessageResponse) => void) => {
-  console.log('Received message:', message, 'from:', sender);
-  
-  // Handle different message types
-  switch (message.action) {
-    case 'checkStatus':
-      // Handle status check
-      console.log('Status check requested');
-      sendResponse({ 
-        status: 'active', 
-        timestamp: Date.now(),
-        extensionId: chrome.runtime.id
-      });
-      return true; // Required for async response
-
-    case 'bypassSite':
-      // Logic to bypass the blocked site
-      console.log('Bypass requested for:', message.url);
-      
-      // Here you would implement your bypass logic
-      // For example:
-      // - Check if site is in blocklist
-      // - Apply bypass method (proxy, cache, etc.)
-      // - Log the attempt
-      
-      sendResponse({ 
-        success: true, 
-        message: 'Bypass attempt initiated',
-        url: message.url,
-        timestamp: message.timestamp
-      });
-      return true;
-
-    case 'customAction':
-      // Handle custom actions with detailed data
-      console.log('Custom action received:', {
-        url: message.currentUrl,
-        title: message.pageTitle,
-        userAgent: message.userAgent,
-        timestamp: message.timestamp
-      });
-      
-      sendResponse({ 
-        success: true, 
-        message: 'Custom action processed',
-        receivedData: {
-          url: message.currentUrl,
-          title: message.pageTitle,
-          timestamp: message.timestamp
-        }
-      });
-      return true;
-
-    case 'pageUnloading':
-      // Handle page unload events
-      console.log('Page unloading:', {
-        url: message.url,
-        timeSpent: message.timeSpent
-      });
-      
-      // You could log analytics, save state, etc.
-      sendResponse({ success: true, message: 'Unload event logged' });
-      return true;
-
-    default:
-      console.warn('Unknown action:', message.action);
-      sendResponse({ 
-        success: false, 
-        message: `Unknown action: ${message.action}` 
-      });
-      return true;
-  }
-});
-
-// Helper function to check if a site is blocked
-async function isSiteBlocked(url: string): Promise<boolean> {
-  try {
-    const result = await chrome.storage.local.get(['blockedSites']);
-    const blockedSites = result.blockedSites || [];
-    
-    return blockedSites.some((blockedUrl: string) => 
-      url.includes(blockedUrl) || new URL(url).hostname.includes(blockedUrl)
-    );
-  } catch (error) {
-    console.error('Error checking blocked sites:', error);
-    return false;
-  }
-}
-
-// Helper function to add a site to the block list
-async function addBlockedSite(url: string): Promise<void> {
-  try {
-    const result = await chrome.storage.local.get(['blockedSites']);
-    const blockedSites = result.blockedSites || [];
-    
-    if (!blockedSites.includes(url)) {
-      blockedSites.push(url);
-      await chrome.storage.local.set({ blockedSites });
-      console.log('Added blocked site:', url);
+      try {      // Redirect to a public page present in the extension
+        await chrome.tabs.update(tabId, {
+          url: chrome.runtime.getURL(blocked_sites_redirect_files[Math.floor(Math.random() * blocked_sites_redirect_files.length)]),
+          active: true
+        });
+      }
+      catch (error) {
+        console.error('Error redirecting tab:', error);
+      }
     }
-  } catch (error) {
-    console.error('Error adding blocked site:', error);
   }
-}
-
-// Optional: Network request handling
-chrome.webRequest?.onBeforeRequest?.addListener(
-  (details) => {
-    console.log('Request intercepted:', details.url);
-    
-    // Your interception logic here
-    // You could check if the site is blocked and redirect or cancel
-    
-    return { cancel: false }; // Don't block the request
-  },
-  { urls: ["<all_urls>"] },
-  ["blocking"]
-);
-
-// Export helper functions for potential use by other parts of the extension
-export { addBlockedSite, isSiteBlocked };
-
+})
