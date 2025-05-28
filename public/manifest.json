@@ -7,7 +7,6 @@
         "storage",
         "tabs",
         "browsingData",
-        "activeTabs",
         "webRequest",
         "webRequestBlocking",
         "notifications"
