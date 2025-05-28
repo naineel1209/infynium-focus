@@ -35,10 +35,15 @@ async function isSiteBlocked(url: string): Promise<boolean> {
       // This will check if any of the blocked sites' hostnames match the current tab's hostname
       // Using URL constructor to ensure we are comparing hostnames correctly
       const isBlocked = blockList.some(
-        (
-          site: BlockedSite) => hostname.includes(new URL(site.url).hostname)
-          &&
-          (site.blockedDays.length === 7 || site.blockedDays.includes(currentDay)) // Check if the current day is in the block list or the list has 7 elements (blocked every day)
+        (site: BlockedSite) => {
+          const siteHostname = new URL(site.url).hostname;
+
+          return (
+            hostname === siteHostname || hostname.endsWith(`.${siteHostname}`) // Check if the hostname matches or is a subdomain
+            // e.g., x.com matches x.com and business.x.com, but not business.facebook.com
+          ) &&
+            (site.blockedDays.length === 7 || site.blockedDays.includes(currentDay)) // Check if the current day is in the block list or the list has 7 elements (blocked every day)
+        }
       );
       resolve(isBlocked);
     })
@@ -64,11 +69,15 @@ chrome.tabs.onUpdated.addListener(async (tabId, changeInfo, tab) => {
     if (await isSiteBlocked(tab.url)) {
       console.log('Blocked site detected:', tab.url);
 
-      // Redirect to a public page present in the extension
-      await chrome.tabs.update(tabId, {
-        url: chrome.runtime.getURL(blocked_sites_redirect_files[Math.floor(Math.random() * blocked_sites_redirect_files.length)]),
-        active: true
-      });
+      try {      // Redirect to a public page present in the extension
+        await chrome.tabs.update(tabId, {
+          url: chrome.runtime.getURL(blocked_sites_redirect_files[Math.floor(Math.random() * blocked_sites_redirect_files.length)]),
+          active: true
+        });
+      }
+      catch (error) {
+        console.error('Error redirecting tab:', error);
+      }
     }
   }
 })
