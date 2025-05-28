@@ -16,9 +16,6 @@ const blocked_sites_redirect_files = [
 
 console.log('Background service worker initialized');
 
-// List the files present in the blocked sites directory
-// const html_blocked_sites_redirects = fs.readdirSync(blocked_sites_dir);
-// console.log('Blocked sites redirects:', html_blocked_sites_redirects);
 async function isSiteBlocked(url: string): Promise<boolean> {
   //A site is blocked if the URL's hostname is in the block list
   return new Promise((resolve) => {
