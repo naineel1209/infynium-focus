@@ -47,7 +47,7 @@ async function isSiteBlocked(url: string): Promise<boolean> {
 
 //Listen for installation
 chrome.runtime.onInstalled.addListener((details) => {
-  console.log('Extension installed:', details.reason, chrome.storage.local.getKeys());
+  console.log('Extension installed:', details.reason);
 
   // You could initialize storage, set default values, etc.
   chrome.storage.local.set({
