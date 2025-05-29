@@ -1,7 +1,7 @@
-/** @file content.ts 
+/** @file content.ts
  * @description Content script for the Chrome extension.
  * @author Naineel Soyantar
-*/
+ */
 
 // Define message types for better type safety
 interface MessageData {
@@ -35,19 +35,19 @@ if (shadow) {
 }
 
 // Function to send messages to background script
-function sendMessageToBackground(action: string, data?: MessageData): Promise<MessageResponse> {
+function sendMessageToBackground(
+  action: string,
+  data?: MessageData
+): Promise<MessageResponse> {
   return new Promise((resolve, reject) => {
     const message: MessageRequest = { action, ...data };
-    chrome.runtime.sendMessage(
-      message,
-      (response: MessageResponse) => {
-        if (chrome.runtime.lastError) {
-          reject(chrome.runtime.lastError);
-        } else {
-          resolve(response);
-        }
+    chrome.runtime.sendMessage(message, (response: MessageResponse) => {
+      if (chrome.runtime.lastError) {
+        reject(chrome.runtime.lastError);
+      } else {
+        resolve(response);
       }
-    );
+    });
   });
 }
 
@@ -64,11 +64,13 @@ async function checkBackgroundStatus(): Promise<MessageResponse | undefined> {
 }
 
 // Example 2: Send bypassSite message
-async function requestSiteBypass(siteUrl?: string): Promise<MessageResponse | undefined> {
+async function requestSiteBypass(
+  siteUrl?: string
+): Promise<MessageResponse | undefined> {
   try {
     const response = await sendMessageToBackground('bypassSite', {
       url: siteUrl || window.location.href,
-      timestamp: Date.now()
+      timestamp: Date.now(),
     });
     console.log('Bypass response:', response);
     return response;
@@ -85,7 +87,7 @@ async function sendCustomMessage(): Promise<MessageResponse | undefined> {
       currentUrl: window.location.href,
       userAgent: navigator.userAgent,
       timestamp: Date.now(),
-      pageTitle: document.title
+      pageTitle: document.title,
     });
     console.log('Custom message response:', response);
     return response;
@@ -115,7 +117,7 @@ window.addEventListener('beforeunload', () => {
   // Send message before page unloads
   void sendMessageToBackground('pageUnloading', {
     url: window.location.href,
-    timeSpent: Date.now() - performance.timeOrigin
+    timeSpent: Date.now() - performance.timeOrigin,
   });
 });
 
@@ -136,5 +138,5 @@ window.extensionAPI = {
   checkStatus: checkBackgroundStatus,
   requestBypass: requestSiteBypass,
   sendCustomMessage: sendCustomMessage,
-  handleBlockedAccess: handleBlockedContentAccess
+  handleBlockedAccess: handleBlockedContentAccess,
 };

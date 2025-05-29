@@ -5,9 +5,9 @@
  * @returns {Promise<T | null>} A promise that resolves to the value associated with the given key in Chrome's local storage, or `null` if the key does not exist.
  */
 export function getDataFromStorage<T>(key: string): Promise<T | null> {
-    return new Promise((resolve) => {
-        chrome.storage.local.get(key, (result) => {
-            resolve(key in result ? result[key] : null);
-        });
+  return new Promise((resolve) => {
+    chrome.storage.local.get(key, (result) => {
+      resolve(key in result ? result[key] : null);
     });
+  });
 }
