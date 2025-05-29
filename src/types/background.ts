@@ -16,7 +16,4 @@ interface MessageResponse {
   [key: string]: unknown;
 }
 
-export type {
-    MessageRequest,
-    MessageResponse
-}
+export type { MessageRequest, MessageResponse };

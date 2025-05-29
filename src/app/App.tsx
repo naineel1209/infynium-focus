@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import './App.css';
+import React, { useState } from 'react';
 import UbsWrapper from '../components/ubs-wrapper';
+import './App.css';
 
 function App() {
   const [count, setCount] = useState(0);
@@ -10,7 +10,10 @@ function App() {
    * @returns {void}
    */
   const handleButtonClick = async (): Promise<void> => {
-    const currentTab = await chrome.tabs.query({ active: true, currentWindow: true });
+    const currentTab = await chrome.tabs.query({
+      active: true,
+      currentWindow: true,
+    });
 
     // Empty Cache and Hard Reload
     await chrome.browsingData.removeCache({
@@ -24,11 +27,10 @@ function App() {
 
     // Increment the count
     setCount((prevCount) => prevCount + 1);
-  }
+  };
 
   return (
     <>
-      <h1>Unlimited Block Sites</h1>
       <UbsWrapper />
       <div className="card">
         <button onClick={handleButtonClick}>
@@ -39,7 +41,7 @@ function App() {
         </button>
       </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
