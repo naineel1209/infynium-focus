@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval'; style-src * 'unsafe-inline';">
     <title>🔒 Digital Penitentiary - Maximum Security</title>
     <style>
         * {
@@ -22,7 +23,8 @@
             justify-content: center;
             color: #ecf0f1;
             position: relative;
-            overflow: hidden;
+            overflow: auto;
+            padding: 20px 0;
         }
 
         @keyframes prisonLights {
@@ -42,6 +44,7 @@
             max-width: 700px;
             position: relative;
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
         .prison-bars {
@@ -262,13 +265,14 @@
         }
 
         .searchlight {
-            position: absolute;
+            position: fixed;
             width: 100px;
             height: 100px;
             background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
             border-radius: 50%;
             pointer-events: none;
             animation: searchlight 8s linear infinite;
+            z-index: 10;
         }
 
         @keyframes searchlight {
@@ -357,13 +361,13 @@
             </div>
         </div>
 
-        <div class="progress-bar" onclick="digTunnel()">
+        <div class="progress-bar">
             <div class="progress-fill" id="tunnelProgress" style="width: 0%;">
                 <div class="progress-text">🕳️ TUNNEL PROGRESS: <span id="progressPercent">0</span>%</div>
             </div>
         </div>
 
-        <div class="escape-plan" onclick="revealPlan(this)">
+        <div class="escape-plan">
             <div class="plan-title">📋 MASTER ESCAPE PLAN #<span id="planNumber">1</span></div>
             <div class="plan-steps">
                 <div class="plan-step">1. Dig tunnel with mouse clicks</div>
@@ -373,7 +377,7 @@
             </div>
         </div>
 
-        <div class="guard" onclick="alertGuard(this)" title="Click to alert the guard (bad idea)">
+        <div class="guard" title="Click to alert the guard (bad idea)">
             👮‍♂️
         </div>
 
@@ -381,192 +385,13 @@
             🚨 SECURITY BREACH DETECTED! All tunnels have been sealed! 🚨
         </div>
 
-        <button class="button" onclick="digTunnel()">🕳️ Dig Tunnel</button>
-        <button class="button" onclick="newEscapePlan()">📋 New Escape Plan</button>
-        <button class="button" onclick="surrender()">🏳️ Surrender (Recommended)</button>
+        <button class="button">🕳️ Dig Tunnel</button>
+        <button class="button">📋 New Escape Plan</button>
+        <button class="button">🏳️ Surrender (Recommended)</button>
     </div>
 
-    <script>
-        let attempts = parseInt(localStorage.getItem('escapeAttempts') || '0');
-        let tunnelProgress = 0;
-        let planNumber = 1;
-        let guardAlerted = false;
-
-        const escapePlans = [
-            {
-                title: "SPOON TUNNEL METHOD",
-                steps: [
-                    "1. Acquire digital spoon (browser dev tools)",
-                    "2. Dig through firewall (click repeatedly)",
-                    "3. Crawl through internet tubes",
-                    "4. Realize this is still blocked"
-                ]
-            },
-            {
-                title: "TROJAN HORSE STRATEGY",
-                steps: [
-                    "1. Hide inside a legitimate website",
-                    "2. Wait for admin to visit",
-                    "3. Jump out and say 'Gotcha!'",
-                    "4. Get immediately re-blocked"
-                ]
-            },
-            {
-                title: "TIME TRAVEL APPROACH",
-                steps: [
-                    "1. Go back to before the site was blocked",
-                    "2. Access content in the past",
-                    "3. Return to present with screenshots",
-                    "4. Discover screenshots are also blocked"
-                ]
-            },
-            {
-                title: "SOCIAL ENGINEERING",
-                steps: [
-                    "1. Befriend the system administrator",
-                    "2. Invite them to your birthday party",
-                    "3. Ask nicely for access",
-                    "4. Get laughed at and blocked harder"
-                ]
-            },
-            {
-                title: "QUANTUM TUNNELING",
-                steps: [
-                    "1. Become a quantum particle",
-                    "2. Phase through the firewall",
-                    "3. Exist in superposition (blocked/unblocked)",
-                    "4. Collapse into blocked state when observed"
-                ]
-            }
-        ];
-
-        const sarcasticResponses = [
-            "Oh, you sweet summer child. Still trying, I see.",
-            "The definition of insanity is... well, this.",
-            "Your determination is admirable and concerning.",
-            "Perhaps it's time to pick up a hobby. Like knitting.",
-            "The only thing you're escaping is productivity.",
-            "This is more entertaining than the content you're trying to reach.",
-            "I've seen prison movies. This isn't how it works.",
-            "Maybe the real treasure was the time you wasted along the way."
-        ];
-
-        function init() {
-            attempts++;
-            localStorage.setItem('escapeAttempts', attempts.toString());
-            
-            document.getElementById('prisonerId').textContent = 404 + attempts;
-            document.getElementById('timeServed').textContent = `${attempts * 3} minutes`;
-            
-            if (attempts > 10) {
-                document.getElementById('sentence').textContent = 'Double life without WiFi';
-            } else if (attempts > 20) {
-                document.getElementById('sentence').textContent = 'Eternal digital exile';
-            }
-        }
-
-        function digTunnel() {
-            if (guardAlerted) {
-                showAlert("🚨 GUARDS ARE WATCHING! TUNNEL PROGRESS RESET! 🚨");
-                tunnelProgress = 0;
-                guardAlerted = false;
-                document.querySelector('.guard').classList.remove('alerted');
-            } else {
-                tunnelProgress += Math.random() * 15 + 5;
-                if (tunnelProgress > 100) {
-                    tunnelProgress = 0;
-                    showAlert("🕳️ TUNNEL COLLAPSED! You dug too greedily and too deep! 🕳️");
-                }
-            }
-            
-            document.getElementById('tunnelProgress').style.width = Math.min(tunnelProgress, 100) + '%';
-            document.getElementById('progressPercent').textContent = Math.floor(Math.min(tunnelProgress, 100));
-            
-            if (tunnelProgress >= 100) {
-                setTimeout(() => {
-                    showAlert("🎉 TUNNEL COMPLETE! Wait... it leads to another blocked page. 🎉");
-                    tunnelProgress = 0;
-                    document.getElementById('tunnelProgress').style.width = '0%';
-                    document.getElementById('progressPercent').textContent = '0';
-                }, 1000);
-            }
-        }
-
-        function alertGuard(guard) {
-            guardAlerted = true;
-            guard.classList.add('alerted');
-            showAlert("🚨 YOU FOOL! WHY DID YOU CLICK THE GUARD?! 🚨");
-            
-            setTimeout(() => {
-                guard.classList.remove('alerted');
-            }, 2000);
-        }
-
-        function revealPlan(planElement) {
-            const plan = escapePlans[planNumber % escapePlans.length];
-            planElement.querySelector('.plan-title').innerHTML = `📋 ${plan.title}`;
-            
-            const stepsContainer = planElement.querySelector('.plan-steps');
-            stepsContainer.innerHTML = '';
-            
-            plan.steps.forEach((step, index) => {
-                const stepDiv = document.createElement('div');
-                stepDiv.className = 'plan-step';
-                stepDiv.textContent = step;
-                stepDiv.style.animationDelay = (index * 0.1) + 's';
-                stepsContainer.appendChild(stepDiv);
-            });
-            
-            planNumber++;
-        }
-
-        function newEscapePlan() {
-            const planElement = document.querySelector('.escape-plan');
-            revealPlan(planElement);
-            
-            document.getElementById('planNumber').textContent = planNumber;
-        }
-
-        function surrender() {
-            const responses = [
-                "Finally! Some common sense!",
-                "Wisdom comes to those who wait... and give up.",
-                "Your surrender has been noted in your permanent record.",
-                "Perhaps now you can find inner peace. Or Netflix.",
-                "The system commends your eventual rationality.",
-                "Breaking: Local person discovers the meaning of 'blocked'."
-            ];
-            
-            const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-            showAlert(`🏳️ ${randomResponse} 🏳️`);
-            
-            setTimeout(() => {
-                if (confirm("Would you like to try a different blocked site? (Spoiler: it won't work)")) {
-                    location.reload();
-                }
-            }, 3000);
-        }
-
-        function showAlert(message) {
-            const alertBox = document.getElementById('alertBox');
-            alertBox.textContent = message;
-            alertBox.style.display = 'block';
-            
-            setTimeout(() => {
-                alertBox.style.display = 'none';
-            }, 3000);
-        }
-
-        // Random sarcastic comments
-        setInterval(() => {
-            if (Math.random() < 0.1) { // 10% chance every interval
-                const randomResponse = sarcasticResponses[Math.floor(Math.random() * sarcasticResponses.length)];
-                showAlert(randomResponse);
-            }
-        }, 15000);
-
-        // Initialize on page load
-        init();
-    </script>
+    <!-- Load JavaScript files -->
+    <script nonce="ultramanChickPeaSoup" src="js/shared.js"></script>
+    <script nonce="ultramanChickPeaSoup2" src="js/escape.js"></script>
 </body>
 </html>

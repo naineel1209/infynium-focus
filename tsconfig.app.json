@@ -17,7 +17,8 @@
 
     /* Linting */
     "strict": true,
-    "noUnusedLocals": true,
+    /*Allow unused local React import*/
+    "noUnusedLocals": false,
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
