@@ -28,6 +28,17 @@ const UbsWrapper = () => {
     url: '',
     blockedDays: [],
   });
+  const [showNewSiteDays, setShowNewSiteDays] = useState(false);
+  const [expandedSites, setExpandedSites] = useState<Record<string, boolean>>(
+    {}
+  );
+
+  const toggleSiteDays = (id: string) => {
+    setExpandedSites((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
 
   // This effect runs once on component mount to fetch the blocked sites from storage
   // If no data is found, it initializes with default blocked sites
@@ -105,34 +116,65 @@ const UbsWrapper = () => {
             <input
               type="text"
               placeholder="Enter new blocked site URL"
-              className="w-full px-4 py-2 rounded border text-gray-900 bg-white border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full px-4 py-2 rounded border text-gray-900 bg-white border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400"
               onChange={(e) =>
                 setNewBlockedSite((prev) => ({ ...prev, url: e.target.value }))
               }
               value={newBlockedSite.url}
             />
-            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2">
-              {DAYS.map((day, index) => (
-                <label key={index} className="flex items-center gap-2 text-sm">
-                  <input
-                    type="checkbox"
-                    className="h-4 w-4 accent-blue-600"
-                    onChange={() =>
-                      setNewBlockedSite((prev) => ({
-                        ...prev,
-                        blockedDays: prev.blockedDays.includes(index)
-                          ? prev.blockedDays.filter((d) => d !== index)
-                          : [...prev.blockedDays, index],
-                      }))
-                    }
-                    checked={newBlockedSite.blockedDays.includes(index)}
-                  />
-                  <span className="text-gray-700">{day}</span>
-                </label>
-              ))}
+            <div className="w-full mb-2">
+              <button
+                type="button"
+                className="flex items-center gap-3 justify-between w-full py-3 px-4 rounded-md bg-emerald-50 hover:bg-emerald-100 transition-colors border border-emerald-200"
+                onClick={() => setShowNewSiteDays(!showNewSiteDays)}
+              >
+                <div className="flex flex-col items-start">
+                  <span className="font-medium text-emerald-600">
+                    Select Days
+                  </span>
+                  <span className="text-sm text-emerald-600 mt-1 text-justify">
+                    {newBlockedSite.blockedDays.length > 0
+                      ? `${newBlockedSite.blockedDays.length} days selected`
+                      : 'Choose which days to block'}
+                  </span>
+                </div>
+                <span className="text-emerald-600 text-lg">
+                  {showNewSiteDays ? '▲' : '▼'}
+                </span>
+              </button>
+
+              <div
+                className={`overflow-hidden transition-all duration-300 ${showNewSiteDays ? 'max-h-[300px] opacity-100 mt-2' : 'max-h-0 opacity-0'}`}
+              >
+                <div className="grid grid-cols-4 place-items-center-safe py-3 px-1 rounded-md bg-white">
+                  {DAYS.map((day, index) => (
+                    <label
+                      key={index}
+                      className="flex flex-col items-center justify-center gap-1 cursor-pointer p-1 hover:bg-blue-50 rounded transition-colors"
+                    >
+                      <span className="text-sm font-medium text-gray-700">
+                        {day.substring(0, 3)}
+                      </span>
+                      <input
+                        type="checkbox"
+                        className="h-4 w-4 accent-emerald-600"
+                        onChange={() =>
+                          setNewBlockedSite((prev) => ({
+                            ...prev,
+                            blockedDays: prev.blockedDays.includes(index)
+                              ? prev.blockedDays.filter((d) => d !== index)
+                              : [...prev.blockedDays, index],
+                          }))
+                        }
+                        checked={newBlockedSite.blockedDays.includes(index)}
+                      />
+                    </label>
+                  ))}
+                </div>
+              </div>
             </div>
             <button
-              className="px-4 py-2 rounded shadow text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400"
+              className="px-4 py-2 rounded shadow text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-400"
               onClick={() => {
                 if (!newBlockedSite.url.trim()) {
                   alert('Please enter a valid URL');
@@ -171,37 +213,67 @@ const UbsWrapper = () => {
               key={site.id}
               className="border border-gray-200 rounded-2xl shadow p-4 sm:p-6 bg-white flex flex-col gap-4"
             >
-              <input
-                type="text"
-                value={site.url}
-                onChange={(e) => handleUrlChange(site.id, e.target.value)}
-                className="w-full px-4 py-2 rounded border text-gray-900 bg-white border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
-              />
-
-              <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2">
-                {DAYS.map((day, index) => {
-                  const isChecked = site.blockedDays.includes(index);
-                  return (
-                    <label
-                      key={index}
-                      className="flex items-center gap-2 text-sm"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={isChecked}
-                        onChange={() => toggleBlockedDay(site.id, index)}
-                        className="h-4 w-4 accent-blue-600"
-                      />
-                      <span
-                        className={`${isChecked ? 'text-gray-900' : 'text-gray-400'}`}
-                      >
-                        {day}
-                      </span>
-                    </label>
-                  );
-                })}
+              <div className="flex items-center gap-2">
+                <input
+                  type="text"
+                  value={site.url}
+                  onChange={(e) => handleUrlChange(site.id, e.target.value)}
+                  className="flex-1 px-4 py-2 rounded border text-gray-900 bg-white border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                />
               </div>
-              <div>
+
+              <div className="w-full mb-2">
+                <button
+                  type="button"
+                  className="flex items-center gap-3 justify-between w-full py-3 px-4 rounded-md bg-emerald-50 hover:bg-emerald-100 transition-colors border border-emerald-200"
+                  onClick={() => toggleSiteDays(site.id)}
+                >
+                  <div className="flex flex-col items-start">
+                    <span className="font-medium text-emerald-600">
+                      Blocked Days
+                    </span>
+                    <span className="text-sm text-emerald-600 mt-1 text-justify">
+                      {site.blockedDays.length > 0
+                        ? site.blockedDays
+                            .map((idx) => DAYS[idx].substring(0, 3))
+                            .join(', ')
+                        : 'None selected'}
+                    </span>
+                  </div>
+                  <span className="text-emerald-600 text-lg">
+                    {expandedSites[site.id] ? '▲' : '▼'}
+                  </span>
+                </button>
+
+                <div
+                  className={`overflow-hidden transition-all duration-300 ${expandedSites[site.id] ? 'max-h-[300px] opacity-100 mt-2' : 'max-h-0 opacity-0'}`}
+                >
+                  <div className="grid grid-cols-4 place-items-center-safe py-3 px-1 rounded-md bg-white">
+                    {DAYS.map((day, index) => {
+                      const isChecked = site.blockedDays.includes(index);
+                      return (
+                        <label
+                          key={index}
+                          className={`flex flex-col items-center justify-center gap-1 cursor-pointer p-1 ${isChecked ? 'bg-emerald-50' : 'hover:bg-blue-50'} rounded transition-colors`}
+                        >
+                          <span
+                            className={`text-sm font-medium ${isChecked ? 'text-emerald-700' : 'text-gray-700'}`}
+                          >
+                            {day.substring(0, 3)}
+                          </span>
+                          <input
+                            type="checkbox"
+                            checked={isChecked}
+                            onChange={() => toggleBlockedDay(site.id, index)}
+                            className="h-4 w-4 accent-emerald-600"
+                          />
+                        </label>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+              <div className="flex gap-2">
                 <button
                   className="px-4 py-2 w-full rounded shadow text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-400 hover:shadow-lg transition duration-200"
                   type="button"

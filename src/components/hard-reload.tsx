@@ -28,7 +28,7 @@ export function HardReload() {
   };
 
   return (
-    <div className="card">
+    <div className="card mb-[2rem]">
       <button onClick={handleButtonClick}>
         <span>Hard Reload</span>
         <br />
