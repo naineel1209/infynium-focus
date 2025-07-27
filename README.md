@@ -1,4 +1,4 @@
-# Unlimited Block Sites
+# Infynium Focus
 
 A free and open-source browser extension suite offering two powerful productivity tools: InfyBlock and InfyDoro.
 
