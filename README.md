@@ -5,12 +5,16 @@ A free and open-source browser extension suite offering two powerful productivit
 ## Our Products
 
 ### InfyBlock
+![InfyBlock](public/images/infyblock.png)
+
 A flexible website blocker that helps you stay focused by blocking distracting websites.
 - **Unlimited Blocking**: Block any number of websites
 - **Flexible Duration**: Set blocking periods for any number of days
 - **Customizable Rules**: Create blocking schedules that fit your workflow
 
 ### InfyDoro
+![InfyDoro](public/images/infydoro.png)
+
 A customizable Pomodoro timer designed to help you maintain focus and productivity.
 - **Focus Sessions**: Block distracting websites during focus periods
 - **Break Management**: During breaks, normal website access is restored
@@ -44,19 +48,14 @@ A customizable Pomodoro timer designed to help you maintain focus and productivi
 7. During breaks, normal website access is restored
 8. When the cycle completes, you'll receive a notification
 
-## Roadmap
-
-- **InfyBlock**: Add support for scheduling blocks, advanced analytics, and more customization options
-- **InfyDoro**: Introduce advanced Pomodoro techniques, integration with task management tools, and enhanced analytics
-- **Both**: Improve user interface, add more customization options, and enhance performance, reduce complexity of the codebase
-
 ## Installation
 
 1. Clone this repository or download the source code
 2. Install dependencies: `npm install`
 3. Build the extension: `npm run build`
 4. Load the extension in your browser:
-   - Chrome: Go to `chrome://extensions/`, enable Developer Mode, and click "Load unpacked" and select the `dist` folder
+   - Chrome: Go to `chrome://extensions/`, enable Developer Mode, and click "Load unpacked"
+   - Firefox: Go to `about:debugging#/runtime/this-firefox` and click "Load Temporary Add-on"
 5. Or install directly from your browser's extension store (coming soon)
 
 ## Development
