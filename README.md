@@ -1,54 +1,77 @@
-# React + TypeScript + Vite
+# Unlimited Block Sites
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A free and open-source browser extension suite offering two powerful productivity tools: InfyBlock and InfyDoro.
 
-Currently, two official plugins are available:
+## Our Products
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+### InfyBlock
+A flexible website blocker that helps you stay focused by blocking distracting websites.
+- **Unlimited Blocking**: Block any number of websites
+- **Flexible Duration**: Set blocking periods for any number of days
+- **Customizable Rules**: Create blocking schedules that fit your workflow
 
-## Expanding the ESLint configuration
+### InfyDoro
+A customizable Pomodoro timer designed to help you maintain focus and productivity.
+- **Focus Sessions**: Block distracting websites during focus periods
+- **Break Management**: During breaks, normal website access is restored
+- **Session Tracking**: Monitor your productivity with session tracking
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Features
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- **100% Free**: No hidden fees, no premium tier, completely free
+- **Open Source**: Full source code available for review, modification, and contribution
+- **Privacy Focused**: No data collection or tracking
+- **Lightweight**: Minimal resource usage to keep your browser running smoothly
+- **Clean Interface**: Minimalist design with a smooth progress indicator
+- **Fully Customizable**: Adjust all settings to match your workflow
+
+## How It Works
+
+### InfyBlock
+1. Add any websites you want to block to your blocklist
+2. Set the duration for how long you want sites to be blocked (hours, days, weeks)
+3. Activate blocking with a single click
+4. When you try to visit a blocked site, you'll be redirected to a friendly reminder page
+5. Adjust or remove blocks at any time
+
+### InfyDoro
+1. Add distracting websites to your block list
+2. Set your preferred focus and break durations
+3. Choose the number of work sessions
+4. Click "Save Settings" to lock in your preferences
+5. Start your timer and focus on your work
+6. During focus sessions, blocked sites will be inaccessible
+7. During breaks, normal website access is restored
+8. When the cycle completes, you'll receive a notification
+
+## Roadmap
+
+- **InfyBlock**: Add support for scheduling blocks, advanced analytics, and more customization options
+- **InfyDoro**: Introduce advanced Pomodoro techniques, integration with task management tools, and enhanced analytics
+- **Both**: Improve user interface, add more customization options, and enhance performance, reduce complexity of the codebase
+
+## Installation
+
+1. Clone this repository or download the source code
+2. Install dependencies: `npm install`
+3. Build the extension: `npm run build`
+4. Load the extension in your browser:
+   - Chrome: Go to `chrome://extensions/`, enable Developer Mode, and click "Load unpacked" and select the `dist` folder
+5. Or install directly from your browser's extension store (coming soon)
+
+## Development
+
+This project is built with React, TypeScript, and Vite, making it easy to customize and extend.
+
+```
+npm install
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Contributing
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Contributions are welcome! Feel free to submit issues, feature requests, or pull requests.
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## License
+
+This project is open-source and available under the MIT License.

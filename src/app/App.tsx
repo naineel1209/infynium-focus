@@ -8,18 +8,18 @@ import './App.css';
 const tabs: Tabs[] = [
   {
     id: 0,
-    label: 'InfiBlock',
+    label: 'InfyBlock',
     content: <UbsWrapper />,
   },
   {
     id: 1,
-    label: 'Pomodoro',
+    label: 'InfyDoro',
     content: <PomodoroWrapper />, // Placeholder for Pomodoro functionality
   },
 ];
 
 function App() {
-  const [currentTab, setCurrentTab] = useState<number>(1);
+  const [currentTab, setCurrentTab] = useState<number>(0);
 
   return (
     <>
