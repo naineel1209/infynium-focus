@@ -46,7 +46,27 @@ const TimerDisplayComponent: React.FC<TimerDisplayProps> = ({
   const lastUpdateRef = useRef<number>(0);
   const progressAnimationRef = useRef<number | undefined>(undefined);
 
-  // Function to calculate timer state based on elapsed time
+  /**
+   * Calculates the current state of the timer based on the elapsed time since it started.
+   * This function updates the timer's state, including the remaining time, current session,
+   * and whether the timer is in a focus or break phase. It also handles animations and
+   * invokes callbacks when sessions are completed.
+   *
+   * Logic:
+   * - Determines the elapsed time since the timer started, accounting for paused duration.
+   * - Calculates the current session and whether the timer is in a focus or break phase.
+   * - Updates the remaining time and triggers animations when transitioning between phases.
+   * - Stops the timer and invokes the `onComplete` callback when all sessions are completed.
+   *
+   * Side Effects:
+   * - Updates state variables: `timeRemaining`, `isRunning`, `currentSession`, `isBreak`, `transitionAnimation`.
+   * - Clears the timer interval when all sessions are completed.
+   * - Invokes the `onComplete` callback when all sessions are completed.
+   *
+   * Dependencies:
+   * - Props: `startedAt`, `pausedDuration`, `focusTime`, `breakTime`, `numSessions`, `onComplete`.
+   * - State: `isBreak`.
+   */
   const calculateTimerState = () => {
     if (!startedAt) return;
 
@@ -110,7 +130,6 @@ const TimerDisplayComponent: React.FC<TimerDisplayProps> = ({
       // We're in focus time - calculate remaining focus time
       remaining = focusTime * 60 - secondsIntoCurrentCycle;
     }
-    console.log(`Remaining time: ${remaining} seconds`);
     setTimeRemaining(Math.max(0, remaining));
   };
 

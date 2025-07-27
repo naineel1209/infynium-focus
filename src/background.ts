@@ -235,8 +235,19 @@ function calculateCurrentPhase(state: PomodoroState): 'focus' | 'break' | null {
 }
 
 /**
- * Listen for changes in the pomodoro state
- * This function is called whenever chrome.storage changes
+ * Sets up a listener for changes in Chrome's local storage.
+ *
+ * This function listens for changes to the `POMODORO_STATE_STORAGE_KEY` in Chrome's local storage.
+ * When a change is detected, it logs the event and can trigger additional actions based on the updated state.
+ *
+ * Storage changes listened for:
+ * - `POMODORO_STATE_STORAGE_KEY`: Detects changes to the current pomodoro state.
+ *
+ * Notifications or actions triggered:
+ * - Logs a message when the pomodoro state changes.
+ * - Ignores changes from non-local storage namespaces.
+ *
+ * Additionally, this function keeps the service worker alive by sending a ping every 25 seconds.
  */
 function setupStorageListener() {
   console.log('Setting up storage change listener');
@@ -304,10 +315,14 @@ function setupStorageListener() {
     }
   });
 
-  // Keep the service worker alive by sending a ping every 25 seconds
-  setInterval(() => {
-    console.log('Service worker ping - keeping alive');
-  }, 25000);
+  // Schedule a periodic alarm to keep the service worker alive
+  chrome.alarms.create('keepAlive', { periodInMinutes: 0.4167 }); // 25 seconds
+
+  chrome.alarms.onAlarm.addListener((alarm) => {
+    if (alarm.name === 'keepAlive') {
+      console.log('Service worker ping - keeping alive');
+    }
+  });
 }
 
 // Initialize the storage listener

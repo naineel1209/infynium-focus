@@ -1,27 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import type { BlockedSite } from '../types/ubs-wrapper';
-import { CHROME_STORAGE_KEY, DAYS } from '../utils/constants';
+import {
+  CHROME_STORAGE_KEY,
+  DAYS,
+  defaultBlockedSites,
+} from '../utils/constants';
 import { getDataFromStorage } from '../utils/utils';
 import { HardReload } from './hard-reload';
 
 const UbsWrapper = () => {
-  const defaultBlockedSites = [
-    {
-      id: '6969',
-      url: 'https://example.com',
-      blockedDays: [0, 1, 2, 3, 4, 5, 6], // Blocked every day for testing
-    },
-    {
-      id: '9696',
-      url: 'https://test.com',
-      blockedDays: [0, 2, 4], // Blocked on Sunday, Tuesday, and Thursday for testing
-    },
-    {
-      id: '151515',
-      url: 'https://x.com',
-      blockedDays: [1, 3, 5], // Blocked on Monday, Wednesday, and Friday for testing
-    },
-  ];
   const [blockedSites, setBlockedSites] = useState<BlockedSite[] | null>(null);
   const [newBlockedSite, setNewBlockedSite] = useState<BlockedSite>({
     id: '',

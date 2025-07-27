@@ -2,7 +2,7 @@ import type {
   PomodoroSettings,
   PomodoroConfig,
   PomodoroState,
-  CompletedPomodoro
+  CompletedPomodoro,
 } from '../types/pomodoro-types';
 import {
   POMODORO_STORAGE_KEY,
@@ -10,7 +10,7 @@ import {
   POMODORO_STATE_STORAGE_KEY,
   DEFAULT_POMODORO_CONFIG,
   DEFAULT_POMODORO_STATE,
-  COMPLETED_POMODOROS_STORAGE_KEY
+  COMPLETED_POMODOROS_STORAGE_KEY,
 } from '../types/pomodoro-types';
 
 /**
@@ -170,7 +170,9 @@ export const saveCompletedPomodoro = async (
 ): Promise<boolean> => {
   try {
     // Get existing completed pomodoros
-    const result = await new Promise<{ [key: string]: CompletedPomodoro[] | undefined }>((resolve) => {
+    const result = await new Promise<{
+      [key: string]: CompletedPomodoro[] | undefined;
+    }>((resolve) => {
       chrome.storage.local.get([COMPLETED_POMODOROS_STORAGE_KEY], (result) => {
         resolve(result);
       });
@@ -313,8 +315,6 @@ export const validateConfig = (config: PomodoroConfig): boolean => {
     alert('Number of sessions must be greater than 0');
     return false;
   }
-
-  console.log('Configuration validation passed:', config);
   return true;
 };
 
