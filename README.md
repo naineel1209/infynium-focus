@@ -55,7 +55,6 @@ A customizable Pomodoro timer designed to help you maintain focus and productivi
 3. Build the extension: `npm run build`
 4. Load the extension in your browser:
    - Chrome: Go to `chrome://extensions/`, enable Developer Mode, and click "Load unpacked"
-   - Firefox: Go to `about:debugging#/runtime/this-firefox` and click "Load Temporary Add-on"
 5. Or install directly from your browser's extension store (coming soon)
 
 ## Development
