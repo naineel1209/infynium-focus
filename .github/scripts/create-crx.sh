@@ -65,8 +65,10 @@ fi
 
 # 5. Create the ZIP package first
 echo "Creating ZIP package..."
-cd "${EXTENSION_SRC_DIR}" || exit 1
-zip -r "${ZIP_FILE_PATH}" .
+zip -r "${ZIP_FILE_PATH}" "${EXTENSION_SRC_DIR}"/* || {
+  echo "Error: Failed to create ZIP file."
+  exit 1
+}
 cd - || exit 1
 
 # 6. Build the CRX package if we have a signing key
