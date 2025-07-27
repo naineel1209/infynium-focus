@@ -1,45 +1,42 @@
 import React, { useState } from 'react';
+import { PomodoroWrapper } from '../components/pomodoro-wrapper';
+import { Switcher } from '../components/switcher';
 import UbsWrapper from '../components/ubs-wrapper';
+import type { Tabs } from '../types/base_types';
 import './App.css';
 
+const tabs: Tabs[] = [
+  {
+    id: 0,
+    label: 'InfiBlock',
+    content: <UbsWrapper />,
+  },
+  {
+    id: 1,
+    label: 'Pomodoro',
+    content: <PomodoroWrapper />, // Placeholder for Pomodoro functionality
+  },
+];
+
 function App() {
-  const [count, setCount] = useState(0);
-
-  /**
-   * Handle button click event - This button will hard reload the current tab
-   * @returns {void}
-   */
-  const handleButtonClick = async (): Promise<void> => {
-    const currentTab = await chrome.tabs.query({
-      active: true,
-      currentWindow: true,
-    });
-
-    // Empty Cache and Hard Reload
-    await chrome.browsingData.removeCache({
-      origins: [currentTab[0].url!],
-    });
-
-    // Hard Reload
-    await chrome.tabs.reload(currentTab[0].id!, {
-      bypassCache: true,
-    });
-
-    // Increment the count
-    setCount((prevCount) => prevCount + 1);
-  };
+  const [currentTab, setCurrentTab] = useState<number>(1);
 
   return (
     <>
-      <UbsWrapper />
-      <div className="card">
-        <button onClick={handleButtonClick}>
-          <span>Hard Reload</span>
-          <br />
-          <span className="counter">{count}</span>
-          <span className="counter"> times</span>
-        </button>
+      <div className="p-[2rem]">
+        {/**
+         * This is where the main content of the app will be rendered
+         */}
+        {tabs[currentTab].content}
+        {/**
+         * The PomodoroWrapper component is a placeholder for the Pomodoro timer functionality.
+         */}
       </div>
+      <Switcher
+        currentTab={currentTab}
+        setCurrentTab={setCurrentTab}
+        tabs={tabs}
+      />
     </>
   );
 }
