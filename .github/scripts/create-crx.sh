@@ -74,7 +74,8 @@ zip -r "${ZIP_FILE_PATH}" "${EXTENSION_SRC_DIR}"/* || {
 if [ -n "${CHROME_CRX_SIGNING_KEY}" ]; then
   echo "Creating CRX package using the 'crx' utility..."
 
-  crx pack "${EXTENSION_SRC_DIR}/" -o "${CRX_PATH}" -p "${CHROME_CRX_SIGNING_KEY}" || {
+  cd "${EXTENSION_SRC_DIR}" || exit 1
+  crx pack -o "${CRX_PATH}" -p "${CHROME_CRX_SIGNING_KEY}" || {
     echo "Error: Failed to create CRX file."
     exit 1
   }
