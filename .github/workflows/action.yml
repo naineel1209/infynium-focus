@@ -1,0 +1,48 @@
+name: Create CRX Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Install dependencies
+        run: |
+          pnpm install
+          pnpm install -g crx
+
+      - name: Build project
+        run: pnpm build
+
+      - name: Make Scripts executable
+        run: chmod +x scripts/*.sh
+        working-directory: ./.github/
+
+      - name: Create CRX package
+        run: ./.github/scripts/create-crx.sh
+        env:
+          CHROME_CRX_SIGNING_KEY: ${{ secrets.CHROME_CRX_SIGNING_KEY }}
+
+      # 6. Create a GitHub Release and upload the .crx file as an asset
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: 'build/infynium-focus.crx'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

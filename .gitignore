@@ -24,3 +24,5 @@ dist-ssr
 *.sw?
 
 *.zip
+*.pem
+*.pem.pub
