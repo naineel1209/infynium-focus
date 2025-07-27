@@ -45,7 +45,7 @@ jobs:
           # The 'files' parameter specifies which file(s) to upload as release assets.
           # Here, we are only uploading the .crx file.
           files: |
-            'build/infynium-focus.crx'
-            'build/infynium-focus.zip'
+            build/infynium-focus.crx
+            build/infynium-focus.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
