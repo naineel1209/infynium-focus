@@ -4,6 +4,10 @@
 
 set -e
 
+# Get the absolute path of the script's directory
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+PROJECT_ROOT="$( cd "${SCRIPT_DIR}/../.." && pwd )"
+
 # 1. Install dependencies - zip
 # Check if zip is installed, if not, try to install it
 if ! command -v zip &> /dev/null; then
@@ -20,10 +24,10 @@ if ! command -v zip &> /dev/null; then
   fi
 fi
 
-# 2. Define variables
-EXTENSION_SRC_DIR="./dist"
+# 2. Define variables with absolute paths
+EXTENSION_SRC_DIR="${PROJECT_ROOT}/dist"
 OUTPUT_NAME="infynium-focus"
-BUILD_DIR="./build"
+BUILD_DIR="${PROJECT_ROOT}/build"
 
 ZIP_NAME="${OUTPUT_NAME}.zip"
 ZIP_FILE_PATH="${BUILD_DIR}/${ZIP_NAME}"
@@ -35,7 +39,7 @@ CRX_PATH="${BUILD_DIR}/${CRX_NAME}"
 if [ -z "${CHROME_CRX_SIGNING_KEY}" ]; then
   echo "No signing key found in environment variables."
   # Try to use a local file if available
-  SIGNING_KEY_FILE="./key.pem"
+  SIGNING_KEY_FILE="${PROJECT_ROOT}/key.pem"
   if [ -f "${SIGNING_KEY_FILE}" ]; then
     echo "Using local key file: ${SIGNING_KEY_FILE}"
     CHROME_CRX_SIGNING_KEY="${SIGNING_KEY_FILE}"
@@ -65,7 +69,8 @@ fi
 
 # 5. Create the ZIP package first
 echo "Creating ZIP package..."
-zip -r "${ZIP_FILE_PATH}" "${EXTENSION_SRC_DIR}"/* || {
+# Change to the extension directory and zip the contents
+(cd "${EXTENSION_SRC_DIR}" && zip -r "${ZIP_FILE_PATH}" .) || {
   echo "Error: Failed to create ZIP file."
   exit 1
 }
@@ -74,8 +79,8 @@ zip -r "${ZIP_FILE_PATH}" "${EXTENSION_SRC_DIR}"/* || {
 if [ -n "${CHROME_CRX_SIGNING_KEY}" ]; then
   echo "Creating CRX package using the 'crx' utility..."
 
-  cd "${EXTENSION_SRC_DIR}" || exit 1
-  crx pack -o "${CRX_PATH}" -p "${CHROME_CRX_SIGNING_KEY}" || {
+  # Use absolute paths with the crx command without changing directory
+  crx pack "${EXTENSION_SRC_DIR}" -o "${CRX_PATH}" -p "${CHROME_CRX_SIGNING_KEY}" || {
     echo "Error: Failed to create CRX file."
     exit 1
   }
