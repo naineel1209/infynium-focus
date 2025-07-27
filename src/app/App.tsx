@@ -19,7 +19,7 @@ const tabs: Tabs[] = [
 ];
 
 function App() {
-  const [currentTab, setCurrentTab] = useState<number>(0);
+  const [currentTab, setCurrentTab] = useState<number>(1);
 
   return (
     <>

@@ -1,0 +1,99 @@
+/* Animation keyframes */
+@keyframes pulse-blue {
+  0%, 100% { background-color: white; }
+  50% { background-color: rgba(59, 130, 246, 0.1); }
+}
+
+@keyframes pulse-green {
+  0%, 100% { background-color: white; }
+  50% { background-color: rgba(16, 185, 129, 0.1); }
+}
+
+@keyframes bounce-in {
+  0% { transform: scale(0.5); opacity: 0; }
+  50% { transform: scale(1.05); }
+  70% { transform: scale(0.95); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Animation classes */
+.animate-pulse-blue {
+  animation: pulse-blue 2s ease-in-out;
+}
+
+.animate-pulse-green {
+  animation: pulse-green 2s ease-in-out;
+}
+
+.animate-bounce-in {
+  animation: bounce-in 0.5s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}
+
+/* Toast styling */
+.toast-notification {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  background-color: #1f2937;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  z-index: 50;
+  animation: fade-in 0.3s ease-out forwards;
+}
+
+/* Configuration change alert styling */
+.config-changed-alert {
+  padding: 0.5rem;
+  margin-bottom: 0.75rem;
+  background-color: #fef3c7;
+  color: #92400e;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.config-changed-alert button {
+  padding: 0.25rem 0.5rem;
+  background-color: #fde68a;
+  color: #92400e;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.config-changed-alert button:hover {
+  background-color: #fcd34d;
+}
+
+/* Timer phase transition styling */
+.timer-phase {
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+.timer-phase.focus {
+  color: #047857;
+}
+
+.timer-phase.break {
+  color: #2563eb;
+}
+
+/* Settings panel border styling when changed during active session */
+.settings-changed-border {
+  border-color: #f59e0b;
+  transition: border-color 0.3s ease;
+}

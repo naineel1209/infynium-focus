@@ -8,7 +8,8 @@
         "tabs",
         "browsingData",
         "webRequest",
-        "notifications"
+        "notifications",
+        "alarms"
     ],
     "background": {
         "service_worker": "background.js",
