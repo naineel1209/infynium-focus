@@ -35,27 +35,60 @@ ZIP_FILE_PATH="${BUILD_DIR}/${ZIP_NAME}"
 CRX_NAME="${OUTPUT_NAME}.crx"
 CRX_PATH="${BUILD_DIR}/${CRX_NAME}"
 
-# Check if the signing key is provided as an environment variable
-if [ -z "${CHROME_CRX_SIGNING_KEY}" ]; then
-  echo "No signing key found in environment variables."
-  # Try to use a local file if available
-  SIGNING_KEY_FILE="${PROJECT_ROOT}/key.pem"
-  if [ -f "${SIGNING_KEY_FILE}" ]; then
-    echo "Using local key file: ${SIGNING_KEY_FILE}"
-    CHROME_CRX_SIGNING_KEY="${SIGNING_KEY_FILE}"
+# 3. Ensure the build directory exists
+echo "Creating build directory: ${BUILD_DIR}"
+mkdir -p "${BUILD_DIR}"
+
+# Process the signing key
+SIGNING_KEY_PATH=""
+if [ -n "${CHROME_CRX_SIGNING_KEY}" ]; then
+  # Check if CHROME_CRX_SIGNING_KEY is a valid file path
+  if [ -f "${CHROME_CRX_SIGNING_KEY}" ]; then
+    echo "Using key file from env variable: ${CHROME_CRX_SIGNING_KEY}"
+    SIGNING_KEY_PATH="${CHROME_CRX_SIGNING_KEY}"
   else
+    # Assume CHROME_CRX_SIGNING_KEY contains the key content
+    echo "Environment variable contains key content, creating temporary key file"
+    SIGNING_KEY_PATH="${BUILD_DIR}/temp_key.pem"
+    # Write key content to a temporary file
+    echo "${CHROME_CRX_SIGNING_KEY}" > "${SIGNING_KEY_PATH}"
+    # Ensure the file has proper permissions
+    chmod 600 "${SIGNING_KEY_PATH}"
+  fi
+else
+  # Try to use a local file if available
+  echo "No signing key found in environment variables."
+  SIGNING_KEY_PATH="${PROJECT_ROOT}/key.pem"
+  if [ ! -f "${SIGNING_KEY_PATH}" ]; then
     echo "Warning: No signing key found. Will create an unsigned ZIP package only."
+    SIGNING_KEY_PATH=""
+  else
+    echo "Using local key file: ${SIGNING_KEY_PATH}"
   fi
 fi
 
-# 3. Ensure all the necessary directories exist and secrets are set
-echo "Creating clean build directory: ${BUILD_DIR}"
-rm -rf "${BUILD_DIR}"
-mkdir -p "${BUILD_DIR}"
+# Clean the build directory but preserve the temporary key file if it exists
+echo "Cleaning build directory..."
+if [ -f "${BUILD_DIR}/temp_key.pem" ]; then
+  # Save the key content
+  KEY_CONTENT=$(cat "${BUILD_DIR}/temp_key.pem")
 
-if [ -z "${CHROME_CRX_SIGNING_KEY}" ]; then
-  echo "Error: CHROME_CRX_SIGNING_KEY is not set."
-  exit 1
+  # Clean the directory
+  rm -rf "${BUILD_DIR}"/*
+
+  # Restore the key file
+  echo "${KEY_CONTENT}" > "${BUILD_DIR}/temp_key.pem"
+  chmod 600 "${BUILD_DIR}/temp_key.pem"
+else
+  # No key to preserve, clean everything
+  rm -rf "${BUILD_DIR}"/*
+fi
+
+# We'll continue even without a signing key to create the ZIP package
+CREATE_CRX=true
+if [ -z "${SIGNING_KEY_PATH}" ]; then
+  echo "No valid signing key available. Will create ZIP package only."
+  CREATE_CRX=false
 fi
 
 # 4. Check if crx utility is available (pnpm package)
@@ -76,14 +109,21 @@ echo "Creating ZIP package..."
 }
 
 # 6. Build the CRX package if we have a signing key
-if [ -n "${CHROME_CRX_SIGNING_KEY}" ]; then
+if [ "${CREATE_CRX}" = true ]; then
   echo "Creating CRX package using the 'crx' utility..."
 
   # Use absolute paths with the crx command without changing directory
-  crx pack "${EXTENSION_SRC_DIR}" -o "${CRX_PATH}" -p "${CHROME_CRX_SIGNING_KEY}" || {
+  crx pack "${EXTENSION_SRC_DIR}" -o "${CRX_PATH}" -p "${SIGNING_KEY_PATH}" || {
     echo "Error: Failed to create CRX file."
-    exit 1
+    # Continue with the script even if CRX creation fails
+    # We'll still have the ZIP package
   }
+
+  # Clean up temporary key file if we created one
+  if [[ "${SIGNING_KEY_PATH}" == "${BUILD_DIR}/temp_key.pem" ]]; then
+    echo "Cleaning up temporary key file"
+    rm -f "${SIGNING_KEY_PATH}"
+  fi
 else
   echo "Warning: No signing key provided. CRX package was not created."
 fi
