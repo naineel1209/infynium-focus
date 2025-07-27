@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "Unlimited Block Sites",
+    "name": "Infynium Focus",
     "version": "1.0",
-    "description": "A Chrome extension to bypass blocked websites.",
+    "description": "A fully customizable, feature-rich, and completely free 2-in-1 Pomodoro timer and website blocker—designed to empower you to focus deeply and accomplish what truly matters.",
     "permissions": [
         "storage",
         "tabs",
