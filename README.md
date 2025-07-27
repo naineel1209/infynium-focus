@@ -45,12 +45,28 @@ A completely free and open-source browser extension suite designed to bolt two h
 8.  **Victory Lap**: Get a notification when you've completed your cycle. Go you! 🎉
 
 ## Get It Now (Or Build It Yourself, You Genius) 🤓
-1.  Clone this repository or just download the source code.
-2.  Install the magic bits: `npm install`
-3.  Build the machine: `npm run build`
-4.  Load it into your browser:
-    -   In Chrome, head to `chrome://extensions/`, flick on **Developer Mode**, and click **"Load unpacked."**
-5.  Or just grab it from the extension store (coming soon to a browser near you).
+
+### Option 1: Download from Releases 📦
+1. Go to the [Releases](https://github.com/yourusername/infynium-focus/releases) section of this repository
+2. Download the latest `.crx` file from the assets
+3. Drag and drop the file into your Chrome browser
+4. Click "Add Extension" when prompted
+
+![Download from Releases](./public/images/download-from-releases.png)
+
+### Option 2: Build It Yourself 🛠️
+1. Clone this repository or download the source code
+   ```bash
+   git clone https://github.com/yourusername/infynium-focus.git
+   cd infynium-focus
+   ```
+2. Install the dependencies: `pnpm install` (or `npm install`)
+3. Build the extension: `pnpm build` (or `npm run build`)
+4. Load it into your browser:
+   - In Chrome, navigate to `chrome://extensions/`
+   - Enable **Developer Mode** (toggle in the top-right)
+   - Click **"Load unpacked"** and select the `dist` folder from the project
+   - The extension should now appear in your browser!
 
 ### For the Tinkerers & Builders 🛠️
 This project is built with the slick combo of **React, TypeScript, and Vite.** It's a dream to work with. Fire up your terminal and go:
@@ -58,6 +74,11 @@ This project is built with the slick combo of **React, TypeScript, and Vite.** I
 npm install
 npm run dev
 ```
+
+### Roadmap & Future Plans 🗺
+- **Infy️Block 2.0**: More powerful blocking features, including AI-driven suggestions for sites to block based on your browsing habits. Detailed analytics to show you how much time you're saving.
+- **InfyDoro 2.0**: Enhanced Pomodoro features, including customizable sound alerts(think motivational quotes).
+- **Cross-Browser Support**: Firefox and Edge versions are in the works. We want everyone to experience the magic of Infynium Focus.
 
 ### Join the Cause 🤝
 Got ideas? Found a bug? Want to add a world-changing feature? We're all ears. Feel free to submit issues, feature requests, or pull requests. Don't be shy!
