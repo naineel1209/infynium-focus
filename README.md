@@ -47,7 +47,7 @@ A completely free and open-source browser extension suite designed to bolt two h
 ## Get It Now (Or Build It Yourself, You Genius) 🤓
 
 ### Option 1: Download from Releases 📦
-1. Go to the [Releases](https://github.com/yourusername/infynium-focus/releases) section of this repository
+1. Go to the [Releases](https://github.com/naineel1209/infynium-focus/releases) section of this repository
 2. Download the latest `.crx` file from the assets
 3. Drag and drop the file into your Chrome browser
 4. Click "Add Extension" when prompted
@@ -57,7 +57,7 @@ A completely free and open-source browser extension suite designed to bolt two h
 ### Option 2: Build It Yourself 🛠️
 1. Clone this repository or download the source code
    ```bash
-   git clone https://github.com/yourusername/infynium-focus.git
+   git clone https://github.com/naineel1209/infynium-focus.git
    cd infynium-focus
    ```
 2. Install the dependencies: `pnpm install` (or `npm install`)
