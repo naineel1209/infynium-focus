@@ -221,7 +221,7 @@ export function PomodoroWrapper() {
     const currentTimeStamp = Date.now();
     const updatedState: PomodoroState = {
       ...timerState,
-      startedAt: timerState.startedAt ? null : currentTimeStamp,
+      startedAt: timerState.startedAt ? null : currentTimeStamp, // Toggle start time
       pausedDuration: 0,
       isPaused: false,
       pausedStartTimeStamp: null,

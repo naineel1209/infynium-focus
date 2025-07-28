@@ -185,6 +185,124 @@ function showNotification(type: string, title: string, message: string) {
 }
 
 /**
+ * Function to check for phase transitions and update storage if needed
+ * This runs periodically to detect phase changes even when the extension is closed
+ */
+/**
+ * Checks if all pomodoro sessions are complete based on elapsed time
+ */
+function isSessionComplete(state: PomodoroState): boolean {
+  if (!state.startedAt || !state.activeConfig || state.isPaused) {
+    return false;
+  }
+
+  // If already marked as completed
+  if (state.completedAt) {
+    return true;
+  }
+
+  // Calculate total elapsed time
+  const elapsedMs = Date.now() - state.startedAt - (state.pausedDuration || 0);
+  const elapsedSeconds = Math.floor(elapsedMs / 1000);
+
+  // Calculate total session duration
+  const { focusTime, breakTime, numSessions } = state.activeConfig;
+  const totalSessionsTimeSeconds = numSessions * (focusTime + breakTime) * 60;
+
+  // Session is complete if elapsed time exceeds total configured time
+  return elapsedSeconds >= totalSessionsTimeSeconds;
+}
+
+/**
+ * Performs periodic checks for phase transitions and session completion
+ * This runs independently of frontend activity
+ */
+function checkForPhaseTransition() {
+  chrome.storage.local.get([POMODORO_STATE_STORAGE_KEY], (result) => {
+    const timerState: PomodoroState = result[POMODORO_STATE_STORAGE_KEY];
+
+    // Skip if no timer state or timer not running
+    if (
+      !timerState ||
+      !timerState.startedAt ||
+      !timerState.activeConfig ||
+      timerState.isPaused
+    ) {
+      return;
+    }
+
+    // First check if session is complete
+    if (!timerState.completedAt && isSessionComplete(timerState)) {
+      console.log('Session completion detected by background check');
+
+      // Mark as completed
+      const completedState = {
+        ...timerState,
+        completedAt: Date.now(),
+      };
+
+      // Save the updated state
+      chrome.storage.local.set(
+        {
+          [POMODORO_STATE_STORAGE_KEY]: completedState,
+        },
+        () => {
+          // Show completion notification
+          showNotification(
+            NOTIFICATION_TYPES.ALL_COMPLETE,
+            'Pomodoro Complete!',
+            'Great job! You have completed all your sessions.'
+          );
+
+          // Store the completed session for stats
+          storeCompletedPomodoro(completedState);
+        }
+      );
+      return; // Skip phase transition check if we just completed
+    }
+
+    // Then check for phase transitions (if not completed)
+    const currentPhase = calculateCurrentPhase(timerState);
+
+    // If phase has changed or not set, update it and trigger notification
+    if (currentPhase && currentPhase !== timerState.currentPhase) {
+      console.log(
+        `Phase transition detected by background check: ${timerState.currentPhase || 'null'} -> ${currentPhase}`
+      );
+
+      // Update timer state with new phase
+      const updatedState = {
+        ...timerState,
+        currentPhase: currentPhase,
+      };
+
+      // Save the updated state
+      chrome.storage.local.set(
+        {
+          [POMODORO_STATE_STORAGE_KEY]: updatedState,
+        },
+        () => {
+          // Show appropriate notification based on the new phase
+          if (currentPhase === 'break') {
+            showNotification(
+              NOTIFICATION_TYPES.BREAK_START,
+              'Break Time!',
+              'Time for a short break. Relax and recharge.'
+            );
+          } else if (currentPhase === 'focus') {
+            showNotification(
+              NOTIFICATION_TYPES.FOCUS_START,
+              'Focus Time!',
+              'Time to focus on your task.'
+            );
+          }
+        }
+      );
+    }
+  });
+}
+
+/**
  * Function to store a completed pomodoro session
  */
 function storeCompletedPomodoro(state: PomodoroState) {
@@ -252,75 +370,19 @@ function calculateCurrentPhase(state: PomodoroState): 'focus' | 'break' | null {
 function setupStorageListener() {
   console.log('Setting up storage change listener');
 
-  chrome.storage.onChanged.addListener((changes, namespace) => {
-    if (namespace !== 'local') {
-      console.log('Ignoring non-local storage changes');
-      return;
-    }
-
-    // Check if pomodoro state changed
-    if (changes[POMODORO_STATE_STORAGE_KEY]) {
-      console.log('Pomodoro state changed detected');
-
-      const newState: PomodoroState =
-        changes[POMODORO_STATE_STORAGE_KEY].newValue;
-      const oldState: PomodoroState =
-        changes[POMODORO_STATE_STORAGE_KEY].oldValue;
-
-      // If no previous state, this is first initialization
-      if (!oldState) {
-        console.log('No previous state, skipping notification');
-        return;
-      }
-
-      // Check for completed sessions
-      if (oldState.startedAt && newState.completedAt && !oldState.completedAt) {
-        console.log('Session completion detected');
-        showNotification(
-          NOTIFICATION_TYPES.ALL_COMPLETE,
-          'Pomodoro Complete!',
-          'Great job! You have completed all your sessions.'
-        );
-        storeCompletedPomodoro(newState);
-        return;
-      }
-
-      // Check for phase transitions
-      if (oldState.startedAt && newState.startedAt) {
-        const oldPhase =
-          oldState.currentPhase || calculateCurrentPhase(oldState);
-        const newPhase =
-          newState.currentPhase || calculateCurrentPhase(newState);
-
-        console.log(`Phase transition check: ${oldPhase} -> ${newPhase}`);
-
-        if (oldPhase !== newPhase) {
-          console.log(`Phase changed from ${oldPhase} to ${newPhase}`);
-
-          if (newPhase === 'break') {
-            showNotification(
-              NOTIFICATION_TYPES.BREAK_START,
-              'Break Time!',
-              'Time for a short break. Relax and recharge.'
-            );
-          } else if (newPhase === 'focus') {
-            showNotification(
-              NOTIFICATION_TYPES.FOCUS_START,
-              'Focus Time!',
-              'Time to focus on your task.'
-            );
-          }
-        }
-      }
-    }
-  });
-
   // Schedule a periodic alarm to keep the service worker alive
   chrome.alarms.create('keepAlive', { periodInMinutes: 0.4167 }); // 25 seconds
+
+  // Create a more frequent alarm specifically for checking phase transitions
+  // Check every 10 seconds to ensure timely notifications
+  chrome.alarms.create('checkPhaseTransition', { periodInMinutes: 0.1667 });
 
   chrome.alarms.onAlarm.addListener((alarm) => {
     if (alarm.name === 'keepAlive') {
       console.log('Service worker ping - keeping alive');
+    } else if (alarm.name === 'checkPhaseTransition') {
+      // Check for phase transitions even when extension is closed
+      checkForPhaseTransition();
     }
   });
 }
