@@ -235,8 +235,14 @@ function checkForPhaseTransition() {
       return;
     }
 
+    // Skip if session is already completed - no more notifications needed
+    if (timerState.completedAt) {
+      console.log('Session already completed, skipping notifications');
+      return;
+    }
+
     // First check if session is complete
-    if (!timerState.completedAt && isSessionComplete(timerState)) {
+    if (isSessionComplete(timerState)) {
       console.log('Session completion detected by background check');
 
       // Mark as completed
@@ -251,7 +257,7 @@ function checkForPhaseTransition() {
           [POMODORO_STATE_STORAGE_KEY]: completedState,
         },
         () => {
-          // Show completion notification
+          // Show completion notification (this is the final notification)
           showNotification(
             NOTIFICATION_TYPES.ALL_COMPLETE,
             'Pomodoro Complete!',
@@ -265,7 +271,7 @@ function checkForPhaseTransition() {
       return; // Skip phase transition check if we just completed
     }
 
-    // Then check for phase transitions (if not completed)
+    // Then check for phase transitions (only if not completed)
     const currentPhase = calculateCurrentPhase(timerState);
 
     // If phase has changed or not set, update it and trigger notification
