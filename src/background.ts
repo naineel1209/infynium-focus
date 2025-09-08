@@ -24,6 +24,10 @@ const blocked_sites_redirect_files = [
   'blocked/persistence.html',
   'blocked/spa.html',
   'blocked/timetravel.html',
+  'blocked/detective.html',
+  'blocked/gym.html',
+  'blocked/restaurant.html',
+  'blocked/space.html',
 ];
 
 console.log(

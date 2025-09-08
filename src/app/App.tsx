@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { PomodoroWrapper } from '../components/pomodoro-wrapper';
 import { Switcher } from '../components/switcher';
 import UbsWrapper from '../components/ubs-wrapper';
+import PinComponent from '../components/pin-component';
 import type { Tabs } from '../types/base_types';
 import './App.css';
 
@@ -14,12 +15,17 @@ const tabs: Tabs[] = [
   {
     id: 1,
     label: 'InfyDoro',
-    content: <PomodoroWrapper />, // Placeholder for Pomodoro functionality
+    content: <PomodoroWrapper />,
   },
 ];
 
 function App() {
   const [currentTab, setCurrentTab] = useState<number>(0);
+  const [isUnlocked, setIsUnlocked] = useState<boolean>(false);
+
+  if (!isUnlocked) {
+    return <PinComponent onUnlock={() => setIsUnlocked(true)} />;
+  }
 
   return (
     <>
