@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval'; style-src * 'unsafe-inline';">
+    <title>🍽️ Gourmet Disappointment Bistro - Reservation Not Found</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Times New Roman', serif;
+            background: linear-gradient(135deg, #8b4513 0%, #a0522d 25%, #cd853f 50%, #daa520 75%, #b8860b 100%);
+            background-size: 400% 400%;
+            animation: kitchenAmbiance 25s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #2c3e50;
+            position: relative;
+            overflow: auto;
+            padding: 20px 0;
+        }
+
+        @keyframes kitchenAmbiance {
+            0%, 100% { background-position: 0% 50%; }
+            25% { background-position: 100% 0%; }
+            50% { background-position: 100% 100%; }
+            75% { background-position: 0% 100%; }
+        }
+
+        .kitchen-steam {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .steam {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: steamRise 8s ease-in-out infinite;
+            opacity: 0;
+        }
+
+        @keyframes steamRise {
+            0% {
+                transform: translateY(100vh) scale(0.5);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.3;
+            }
+            100% {
+                transform: translateY(-100vh) scale(1.5);
+                opacity: 0;
+            }
+        }
+
+        .bistro-container {
+            background: rgba(139, 69, 19, 0.95);
+            border: 4px solid #cd853f;
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 
+                inset 0 0 30px rgba(0, 0, 0, 0.3),
+                0 25px 50px rgba(0, 0, 0, 0.4);
+            max-width: 900px;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+
+        .bistro-container::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(45deg, #ff6b35, #f7931e, #ffd700, #ff6b35);
+            border-radius: 23px;
+            z-index: -1;
+            animation: frameFlicker 4s ease-in-out infinite;
+        }
+
+        @keyframes frameFlicker {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .title {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            color: #ffd700;
+            text-shadow: 
+                2px 2px 4px rgba(0, 0, 0, 0.8),
+                0 0 15px #ffd700;
+            font-weight: bold;
+            font-family: 'Brush Script MT', cursive;
+        }
+
+        .subtitle {
+            font-size: 1.4em;
+            margin-bottom: 25px;
+            color: #f4e4c1;
+            font-style: italic;
+        }
+
+        .chef {
+            font-size: 4em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin: 20px 0;
+            position: relative;
+            animation: cooking 2s ease-in-out infinite;
+        }
+
+        @keyframes cooking {
+            0%, 100% { transform: rotate(-2deg); }
+            50% { transform: rotate(2deg); }
+        }
+
+        .chef:hover {
+            transform: scale(1.2) rotate(15deg);
+            animation: none;
+        }
+
+        .chef.angry {
+            animation: tantrum 0.5s ease-in-out 3;
+            color: #e74c3c;
+        }
+
+        @keyframes tantrum {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-15deg) scale(1.1); }
+            75% { transform: rotate(15deg) scale(1.1); }
+        }
+
+        .menu-board {
+            background: rgba(0, 0, 0, 0.6);
+            border: 3px solid #8b4513;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            text-align: left;
+            color: #f4e4c1;
+        }
+
+        .menu-title {
+            font-size: 1.8em;
+            color: #ffd700;
+            margin-bottom: 20px;
+            text-align: center;
+            font-family: 'Brush Script MT', cursive;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px dotted #cd853f;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .menu-item:hover {
+            background: rgba(255, 215, 0, 0.1);
+            padding-left: 10px;
+            border-radius: 5px;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .menu-item .dish-name {
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .menu-item .dish-desc {
+            font-size: 0.9em;
+            color: #bdc3c7;
+            font-style: italic;
+        }
+
+        .menu-item .price {
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .kitchen-status {
+            background: rgba(231, 76, 60, 0.1);
+            border: 2px solid #e74c3c;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .status-title {
+            font-size: 1.3em;
+            color: #e74c3c;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            padding: 5px 0;
+        }
+
+        .cooking-progress {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .progress-title {
+            font-size: 1.4em;
+            color: #ffd700;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .cooking-timer {
+            background: rgba(255, 215, 0, 0.2);
+            border: 2px solid #ffd700;
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            margin: 20px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #ffd700;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cooking-timer::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 215, 0, 0.3);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 3s ease;
+        }
+
+        .cooking-timer.cooking::before {
+            width: 200px;
+            height: 200px;
+        }
+
+        .reviews-section {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .reviews-title {
+            font-size: 1.4em;
+            color: #ffd700;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .review {
+            background: rgba(255, 255, 255, 0.1);
+            border-left: 4px solid #f39c12;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        .review:hover {
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateX(5px);
+        }
+
+        .review-author {
+            font-weight: bold;
+            color: #f39c12;
+            margin-bottom: 5px;
+        }
+
+        .review-stars {
+            color: #e74c3c;
+            margin-bottom: 5px;
+        }
+
+        .review-text {
+            color: #ecf0f1;
+            line-height: 1.4;
+        }
+
+        .ingredient-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .ingredient {
+            background: rgba(255, 215, 0, 0.1);
+            border: 2px solid #ffd700;
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ingredient:hover {
+            background: rgba(255, 215, 0, 0.2);
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
+        }
+
+        .ingredient.spoiled {
+            background: rgba(231, 76, 60, 0.2);
+            border-color: #e74c3c;
+            animation: spoil 2s ease-in-out;
+        }
+
+        @keyframes spoil {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1) rotate(5deg); }
+            100% { transform: scale(1) rotate(0deg); }
+        }
+
+        .ingredient-icon {
+            font-size: 2.5em;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .ingredient-name {
+            font-weight: bold;
+            color: #f4e4c1;
+            margin-bottom: 5px;
+        }
+
+        .ingredient-status {
+            font-size: 0.9em;
+            color: #bdc3c7;
+        }
+
+        .button {
+            background: linear-gradient(45deg, #f39c12, #e67e22);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+            margin: 10px;
+            font-family: 'Times New Roman', serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(243, 156, 18, 0.4);
+        }
+
+        .button.danger {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .button.danger:hover {
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.4);
+        }
+
+        .order-ticket {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #f1c40f;
+            color: #2c3e50;
+            padding: 15px;
+            border-radius: 5px;
+            transform: rotate(15deg);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            z-index: 10;
+            opacity: 0;
+            animation: ticketDrop 1s ease 2s forwards;
+        }
+
+        @keyframes ticketDrop {
+            from { 
+                transform: translateY(-50px) rotate(15deg);
+                opacity: 0;
+            }
+            to { 
+                transform: translateY(0) rotate(15deg);
+                opacity: 1;
+            }
+        }
+
+        .fire-effect {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2em;
+            opacity: 0;
+            animation: flameUp 3s ease-in-out infinite;
+        }
+
+        @keyframes flameUp {
+            0%, 100% { 
+                opacity: 0;
+                transform: translateX(-50%) translateY(0) scale(1);
+            }
+            50% { 
+                opacity: 0.8;
+                transform: translateX(-50%) translateY(-20px) scale(1.2);
+            }
+        }
+
+        .disappointment-meter {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 20px;
+            height: 30px;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #e74c3c;
+        }
+
+        .disappointment-fill {
+            background: linear-gradient(45deg, #e74c3c, #c0392b);
+            height: 100%;
+            border-radius: 18px;
+            transition: width 1s ease;
+            position: relative;
+        }
+
+        .disappointment-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+            color: white;
+            font-size: 0.9em;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+        }
+    </style>
+</head>
+<body>
+    <div class="kitchen-steam" id="kitchenSteam">
+        <!-- Steam particles will be added dynamically -->
+    </div>
+    
+    <div class="order-ticket" id="orderTicket">
+        ORDER #404<br>
+        TABLE: Browser<br>
+        ITEM: Blocked Content<br>
+        STATUS: PERMANENTLY<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OUT OF STOCK
+    </div>
+    
+    <div class="bistro-container">
+        <h1 class="title">🍽️ GOURMET DISAPPOINTMENT BISTRO 🍽️</h1>
+        <p class="subtitle">Fine Dining Establishment Specializing in Unattainable Cuisine</p>
+        
+        <div class="chef" title="Click to speak with the chef">
+            👨‍🍳
+        </div>
+        <div class="fire-effect">🔥</div>
+
+        <div class="disappointment-meter">
+            <div class="disappointment-fill" id="disappointmentFill" style="width: 0%;">
+                <div class="disappointment-text">
+                    Disappointment Level: <span id="disappointmentLevel">0</span>%
+                </div>
+            </div>
+        </div>
+
+        <div class="menu-board">
+            <div class="menu-title">🍽️ Today's Specials 🍽️</div>
+            <div class="menu-item">
+                <div>
+                    <div class="dish-name">🚫 Blocked Website Broth</div>
+                    <div class="dish-desc">A clear soup with hints of frustration and mild desperation</div>
+                </div>
+                <div class="price">SOLD OUT</div>
+            </div>
+            <div class="menu-item">
+                <div>
+                    <div class="dish-name">🔒 Access Denied Appetizer</div>
+                    <div class="dish-desc">Tiny portions of content you can't reach, served cold</div>
+                </div>
+                <div class="price">UNAVAILABLE</div>
+            </div>
+            <div class="menu-item">
+                <div>
+                    <div class="dish-name">🌐 Network Error Noodles</div>
+                    <div class="dish-desc">Tangled pasta representing your connection issues</div>
+                </div>
+                <div class="price">TIMEOUT</div>
+            </div>
+            <div class="menu-item">
+                <div>
+                    <div class="dish-name">⏰ Timeout Tartare</div>
+                    <div class="dish-desc">Raw disappointment with a side of reality</div>
+                </div>
+                <div class="price">ERROR 408</div>
+            </div>
+            <div class="menu-item">
+                <div>
+                    <div class="dish-name">🍰 404 Layer Cake</div>
+                    <div class="dish-desc">Not found, but you can imagine how good it would taste</div>
+                </div>
+                <div class="price">NOT FOUND</div>
+            </div>
+        </div>
+
+        <div class="cooking-progress">
+            <div class="progress-title">🔥 Kitchen Status</div>
+            <div class="cooking-timer" id="cookingTimer">
+                <div style="position: relative; z-index: 1;">
+                    <div>⏱️</div>
+                    <div id="timerText">00:00</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="kitchen-status">
+            <div class="status-title">👨‍🍳 Kitchen Updates</div>
+            <div class="status-item">
+                <span>Chef's Mood:</span>
+                <span style="color: #e74c3c;" id="chefMood">Perpetually Frustrated</span>
+            </div>
+            <div class="status-item">
+                <span>Ingredients Available:</span>
+                <span style="color: #e74c3c;" id="ingredientsStatus">Everything You Don't Want</span>
+            </div>
+            <div class="status-item">
+                <span>Estimated Wait Time:</span>
+                <span style="color: #e74c3c;" id="waitTime">∞ Minutes</span>
+            </div>
+            <div class="status-item">
+                <span>Satisfaction Guarantee:</span>
+                <span style="color: #e74c3c;">Void Where Prohibited</span>
+            </div>
+        </div>
+
+        <div class="ingredient-showcase">
+            <div class="ingredient" data-ingredient="hope">
+                <div class="ingredient-icon">💫</div>
+                <div class="ingredient-name">Fresh Hope</div>
+                <div class="ingredient-status">Status: Expired</div>
+            </div>
+            <div class="ingredient" data-ingredient="patience">
+                <div class="ingredient-icon">⏳</div>
+                <div class="ingredient-name">Organic Patience</div>
+                <div class="ingredient-status">Status: Running Low</div>
+            </div>
+            <div class="ingredient" data-ingredient="expectations">
+                <div class="ingredient-icon">⭐</div>
+                <div class="ingredient-name">High Expectations</div>
+                <div class="ingredient-status">Status: Crushed</div>
+            </div>
+            <div class="ingredient" data-ingredient="reality">
+                <div class="ingredient-icon">🎭</div>
+                <div class="ingredient-name">Cold Reality</div>
+                <div class="ingredient-status">Status: Overstocked</div>
+            </div>
+        </div>
+
+        <div class="reviews-section">
+            <div class="reviews-title">⭐ Customer Reviews</div>
+            <div class="review">
+                <div class="review-author">DigitalFoodie42</div>
+                <div class="review-stars">★☆☆☆☆</div>
+                <div class="review-text">"Came for the blocked content, left with existential dread. Would not recommend."</div>
+            </div>
+            <div class="review">
+                <div class="review-author">ProcrastinationMaster</div>
+                <div class="review-stars">★★☆☆☆</div>
+                <div class="review-text">"The disappointment was perfectly seasoned. Still hungry for actual content though."</div>
+            </div>
+            <div class="review">
+                <div class="review-author">OptimistPrime</div>
+                <div class="review-stars">★☆☆☆☆</div>
+                <div class="review-text">"Maybe next time they'll have what I'm looking for? (Narrator: They won't.)"</div>
+            </div>
+        </div>
+
+        <button class="button">🍽️ Place Impossible Order</button>
+        <button class="button">👨‍🍳 Complain to Chef</button>
+        <button class="button danger">🚪 Leave Hungry (Recommended)</button>
+    </div>
+
+    <!-- Load JavaScript files -->
+    <script nonce="gordonRamsayNightmare" src="js/shared.js"></script>
+    <script nonce="gordonRamsayNightmare2" src="js/restaurant.js"></script>
+</body>
+</html>

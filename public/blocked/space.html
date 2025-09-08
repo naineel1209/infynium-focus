@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline' 'unsafe-eval'; script-src * 'unsafe-inline' 'unsafe-eval'; style-src * 'unsafe-inline';">
+    <title>🛸 Intergalactic Content Quarantine Station</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', monospace;
+            background: linear-gradient(135deg, #0c0c0c 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #533483 100%);
+            background-size: 400% 400%;
+            animation: cosmicShift 30s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #00ff41;
+            position: relative;
+            overflow: auto;
+            padding: 20px 0;
+        }
+
+        @keyframes cosmicShift {
+            0%, 100% { 
+                background-position: 0% 50%; 
+                filter: hue-rotate(0deg);
+            }
+            25% { 
+                background-position: 100% 0%; 
+                filter: hue-rotate(90deg);
+            }
+            50% { 
+                background-position: 100% 100%; 
+                filter: hue-rotate(180deg);
+            }
+            75% { 
+                background-position: 0% 100%; 
+                filter: hue-rotate(270deg);
+            }
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .star {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s ease-in-out infinite;
+            box-shadow: 0 0 6px white;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .floating-ufo {
+            position: absolute;
+            font-size: 1.5em;
+            opacity: 0.6;
+            animation: ufoFloat 15s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes ufoFloat {
+            0% {
+                transform: translateX(-100px) translateY(20px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateX(calc(100vw + 100px)) translateY(-20px);
+                opacity: 0;
+            }
+        }
+
+        .quarantine-station {
+            background: rgba(26, 26, 46, 0.95);
+            border: 3px solid #00ff41;
+            border-radius: 25px;
+            padding: 40px;
+            text-align: center;
+            box-shadow: 
+                inset 0 0 30px rgba(0, 255, 65, 0.1),
+                0 25px 50px rgba(0, 0, 0, 0.6);
+            max-width: 950px;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+
+        .quarantine-station::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            background: linear-gradient(45deg, #00ff41, #00ccff, #ff00ff, #00ff41);
+            border-radius: 28px;
+            z-index: -1;
+            animation: alienBorder 4s linear infinite;
+        }
+
+        @keyframes alienBorder {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .title {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            color: #00ff41;
+            text-shadow: 
+                0 0 10px #00ff41,
+                0 0 20px #00ff41,
+                0 0 30px #00ff41;
+            font-weight: bold;
+            animation: titlePulse 3s ease-in-out infinite;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% { 
+                text-shadow: 
+                    0 0 10px #00ff41,
+                    0 0 20px #00ff41,
+                    0 0 30px #00ff41;
+            }
+            50% { 
+                text-shadow: 
+                    0 0 20px #00ff41,
+                    0 0 30px #00ff41,
+                    0 0 40px #00ff41,
+                    0 0 50px #00ff41;
+            }
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            margin-bottom: 25px;
+            color: #00ccff;
+            font-style: italic;
+        }
+
+        .alien-commander {
+            font-size: 4em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            margin: 20px 0;
+            position: relative;
+            animation: alienBob 4s ease-in-out infinite;
+        }
+
+        @keyframes alienBob {
+            0%, 100% { transform: translateY(0) rotate(-1deg); }
+            50% { transform: translateY(-10px) rotate(1deg); }
+        }
+
+        .alien-commander:hover {
+            transform: scale(1.2) rotate(360deg);
+            animation: none;
+            text-shadow: 0 0 30px #00ff41;
+        }
+
+        .alien-commander.telepathic {
+            animation: mindMeld 1s ease-in-out 3;
+            color: #ff00ff;
+        }
+
+        @keyframes mindMeld {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.1) rotate(-10deg); }
+            75% { transform: scale(1.1) rotate(10deg); }
+        }
+
+        .quarantine-log {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #00ccff;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 25px 0;
+            text-align: left;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .log-title {
+            font-size: 1.6em;
+            color: #00ccff;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .log-entry {
+            margin: 10px 0;
+            padding: 8px;
+            border-left: 3px solid #00ff41;
+            background: rgba(0, 255, 65, 0.05);
+            border-radius: 3px;
+            animation: logFlicker 0.5s ease-in;
+        }
+
+        @keyframes logFlicker {
+            0% { opacity: 0; transform: translateX(-10px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        .log-timestamp {
+            color: #00ccff;
+            font-size: 0.9em;
+        }
+
+        .log-message {
+            color: #00ff41;
+            margin-top: 5px;
+        }
+
+        .galactic-status {
+            background: rgba(255, 0, 255, 0.1);
+            border: 2px solid #ff00ff;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .status-title {
+            font-size: 1.4em;
+            color: #ff00ff;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .status-item {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #00ccff;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .status-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #00ff41;
+            display: block;
+        }
+
+        .status-label {
+            font-size: 0.9em;
+            color: #00ccff;
+            margin-top: 5px;
+        }
+
+        .alien-species {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .species-card {
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid #00ff41;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .species-card:hover {
+            background: rgba(0, 255, 65, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 255, 65, 0.3);
+        }
+
+        .species-card.hostile {
+            border-color: #ff0040;
+            animation: redAlert 2s ease-in-out;
+        }
+
+        @keyframes redAlert {
+            0%, 100% { border-color: #ff0040; }
+            50% { border-color: #ff6666; }
+        }
+
+        .species-icon {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .species-name {
+            font-weight: bold;
+            color: #00ff41;
+            margin-bottom: 5px;
+        }
+
+        .species-status {
+            font-size: 0.9em;
+            color: #00ccff;
+        }
+
+        .containment-field {
+            background: rgba(0, 255, 255, 0.1);
+            border: 3px dashed #00ccff;
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            position: relative;
+            animation: containmentPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes containmentPulse {
+            0%, 100% { 
+                border-color: #00ccff;
+                box-shadow: inset 0 0 20px rgba(0, 255, 255, 0.1);
+            }
+            50% { 
+                border-color: #00ff41;
+                box-shadow: inset 0 0 30px rgba(0, 255, 65, 0.2);
+            }
+        }
+
+        .containment-title {
+            font-size: 1.4em;
+            color: #00ccff;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .containment-info {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            color: #00ff41;
+        }
+
+        .threat-level {
+            background: rgba(255, 0, 64, 0.2);
+            border: 2px solid #ff0040;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            text-align: center;
+            animation: threatBlink 2s ease-in-out infinite;
+        }
+
+        @keyframes threatBlink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .threat-title {
+            font-size: 1.3em;
+            color: #ff0040;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .button {
+            background: linear-gradient(45deg, #00ff41, #00cc33);
+            color: #000;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.1em;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 255, 65, 0.3);
+            margin: 10px;
+            font-family: 'Courier New', monospace;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: bold;
+        }
+
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 255, 65, 0.4);
+            text-shadow: 0 0 10px #00ff41;
+        }
+
+        .button.danger {
+            background: linear-gradient(45deg, #ff0040, #cc0033);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 0, 64, 0.3);
+        }
+
+        .button.danger:hover {
+            box-shadow: 0 8px 25px rgba(255, 0, 64, 0.4);
+        }
+
+        .button.alien {
+            background: linear-gradient(45deg, #ff00ff, #cc00cc);
+            color: white;
+            box-shadow: 0 5px 15px rgba(255, 0, 255, 0.3);
+        }
+
+        .button.alien:hover {
+            box-shadow: 0 8px 25px rgba(255, 0, 255, 0.4);
+        }
+
+        .communication-panel {
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid #00ff41;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        .panel-title {
+            font-size: 1.4em;
+            color: #00ff41;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .message-display {
+            background: rgba(0, 255, 65, 0.1);
+            border: 1px solid #00ff41;
+            border-radius: 8px;
+            padding: 15px;
+            height: 120px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            color: #00ff41;
+        }
+
+        .hologram-effect {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hologram-effect::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 65, 0.4), transparent);
+            animation: hologramScan 3s linear infinite;
+        }
+
+        @keyframes hologramScan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="starsContainer">
+        <!-- Stars will be generated dynamically -->
+    </div>
+    
+    <div class="floating-ufo" style="top: 20%; animation-delay: 0s;">🛸</div>
+    <div class="floating-ufo" style="top: 60%; animation-delay: -5s;">🚀</div>
+    <div class="floating-ufo" style="top: 40%; animation-delay: -10s;">🛰️</div>
+    
+    <div class="quarantine-station">
+        <h1 class="title">🛸 INTERGALACTIC CONTENT QUARANTINE 🛸</h1>
+        <p class="subtitle">Galactic Security Division - Blocked Content Containment Unit</p>
+        
+        <div class="alien-commander hologram-effect" title="Click to establish telepathic communication">
+            👽
+        </div>
+
+        <div class="threat-level">
+            <div class="threat-title">⚠️ THREAT LEVEL: MAXIMUM ⚠️</div>
+            <div>Human detected attempting to access quarantined digital content</div>
+        </div>
+
+        <div class="quarantine-log">
+            <div class="log-title">📡 QUARANTINE LOG</div>
+            <div id="logEntries">
+                <div class="log-entry">
+                    <div class="log-timestamp">STARDATE 2024.042.7</div>
+                    <div class="log-message">CONTAINMENT BREACH DETECTED: Human attempting unauthorized access</div>
+                </div>
+                <div class="log-entry">
+                    <div class="log-timestamp">STARDATE 2024.042.8</div>
+                    <div class="log-message">FORCE FIELD STATUS: Holding at 99.9% integrity</div>
+                </div>
+                <div class="log-entry">
+                    <div class="log-timestamp">STARDATE 2024.042.9</div>
+                    <div class="log-message">ALIEN COMMANDER: Highly amused by human persistence</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="galactic-status">
+            <div class="status-title">🌌 GALACTIC STATUS REPORT</div>
+            <div class="status-grid">
+                <div class="status-item">
+                    <span class="status-value" id="quarantinedSites">∞</span>
+                    <span class="status-label">Quarantined Sites</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-value" id="humanAttempts">0</span>
+                    <span class="status-label">Human Breach Attempts</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-value" id="containmentLevel">100%</span>
+                    <span class="status-label">Containment Integrity</span>
+                </div>
+                <div class="status-item">
+                    <span class="status-value" id="alienMood">AMUSED</span>
+                    <span class="status-label">Alien Mood</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="alien-species">
+            <div class="species-card" data-species="zeta">
+                <div class="species-icon">👽</div>
+                <div class="species-name">Zeta Reticulans</div>
+                <div class="species-status">Status: Observing</div>
+            </div>
+            <div class="species-card" data-species="gray">
+                <div class="species-icon">🛸</div>
+                <div class="species-name">Gray Collective</div>
+                <div class="species-status">Status: Analyzing</div>
+            </div>
+            <div class="species-card" data-species="nordic">
+                <div class="species-icon">🌟</div>
+                <div class="species-name">Nordic Council</div>
+                <div class="species-status">Status: Diplomatic</div>
+            </div>
+            <div class="species-card" data-species="reptilian">
+                <div class="species-icon">🦎</div>
+                <div class="species-name">Reptilian Empire</div>
+                <div class="species-status">Status: Hostile</div>
+            </div>
+        </div>
+
+        <div class="containment-field">
+            <div class="containment-title">🔒 CONTAINMENT FIELD STATUS</div>
+            <div class="containment-info">
+                <span>Field Strength:</span>
+                <span id="fieldStrength">Maximum</span>
+            </div>
+            <div class="containment-info">
+                <span>Energy Source:</span>
+                <span>Human Frustration</span>
+            </div>
+            <div class="containment-info">
+                <span>Backup Systems:</span>
+                <span>Alien Technology</span>
+            </div>
+            <div class="containment-info">
+                <span>Override Code:</span>
+                <span style="color: #ff0040;">[CLASSIFIED]</span>
+            </div>
+        </div>
+
+        <div class="communication-panel">
+            <div class="panel-title">📡 ALIEN COMMUNICATION INTERFACE</div>
+            <div class="message-display" id="alienMessages">
+                <div>🛸 INCOMING TRANSMISSION 🛸</div>
+                <div>GREETINGS, EARTHLING...</div>
+                <div>YOUR ATTEMPTS ARE... FASCINATING</div>
+                <div>WE HAVE BEEN OBSERVING...</div>
+            </div>
+        </div>
+
+        <button class="button">🔍 Scan for Vulnerabilities</button>
+        <button class="button alien">🧠 Attempt Mind Meld</button>
+        <button class="button danger">🚀 Surrender to Aliens</button>
+    </div>
+
+    <!-- Load JavaScript files -->
+    <script nonce="alphacentauriBeacon" src="js/shared.js"></script>
+    <script nonce="alphacentauriBeacon2" src="js/space.js"></script>
+</body>
+</html>
