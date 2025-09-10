@@ -1,6 +1,8 @@
 # 🚀 Infynium Focus
 *Your brain's new best friend. And your procrastination's worst enemy.*
 
+![banner gif](./public/images/black-screen.gif)
+
 A completely free and open-source browser extension suite designed to bolt two high-powered productivity engines onto your browser: InfyBlock and InfyDoro.
 
 ## Meet Your New Productivity Arsenal 🦾
